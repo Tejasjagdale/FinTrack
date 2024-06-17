@@ -1,0 +1,28 @@
+server:
+  port:
+    8089
+spring:
+  application:
+    name: fintrack
+  datasource:
+    url: jdbc:postgresql://localhost:5432/finTrack
+    username: postgres
+    password: Root
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+#          google:
+#            client-id: your-google-client-id
+#            client-secret: your-google-client-secret
+          github:
+            client-id: Iv23liPr9iDUZ9R33TkS
+            client-secret: 9993bd8feb52503d6df5e42655f92b3863744ec5
+frontend-url: "http://localhost:8089"
