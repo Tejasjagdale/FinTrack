@@ -1,4 +1,4 @@
-import viteLogo from '/fintrack.jpg'
+import viteLogo from '/beaverimg.png'
 import './App.css'
 
 function App() {
