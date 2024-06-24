@@ -1,0 +1,36 @@
+name: CICD
+
+on:
+  push:
+    branches: [production]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean install -DskipTests
+      - name: Login to docker hub
+        run: docker login -u hanseldsouza -p hansel@dsouza
+      - name: Build docker image
+        run: docker build -t hanseldsouza/fintrack-0.0.1-SNAPSHOT .
+      - name: Publish image to docker hub
+        run: docker push hanseldsouza/fintrack-0.0.1-SNAPSHOT:latest
+
+  deploy:
+    needs: build
+    runs-on: [aws-ec2]
+    steps:
+      - name: Pull Image from docker hub
+        run: docker pull hanseldsouza/fintrack-0.0.1-SNAPSHOT:latest
+      - name: Delete old container
+        run: docker rm -f fintrack-container
+      - name: Run docker container
+        run: docker run -d -p 8089:8089 --name fintrack-container hanseldsouza/fintrack-0.0.1-SNAPSHOT
