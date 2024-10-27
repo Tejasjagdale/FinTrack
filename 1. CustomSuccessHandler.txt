@@ -1,3 +1,4 @@
+1. CustomSuccessHandler
 package com.fintrack.fintrack.config;
 
 import com.fintrack.fintrack.entity.Roles;
@@ -75,12 +76,10 @@ public class CustomSucessHandler extends SavedRequestAwareAuthenticationSuccessH
                 Authentication securityAuth = new OAuth2AuthenticationToken(newUser, authorities, oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
                 SecurityContextHolder.getContext().setAuthentication(securityAuth);
             }
-            String token = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
-            String redirectUrl = String.format("%s/oauth2/redirect?token=%s", "http://localhost:5173", token);
-            response.sendRedirect(redirectUrl);
-//            this.setDefaultTargetUrl("http://localhost:5173");
-//            this.setAlwaysUseDefaultTargetUrl(true);
+            this.setDefaultTargetUrl("http://localhost:5173");
+            this.setAlwaysUseDefaultTargetUrl(true);
             super.onAuthenticationSuccess(request, response, authentication);
         }
     }
 }
+

@@ -2,9 +2,43 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import viteLogo from '/beaverimg.png';
+import axios from 'axios';
+import { FcGoogle } from "react-icons/fc";
+import { IoLogoGithub } from "react-icons/io";
 
-const Home = () => {
+
+type HomeProps = {
+    setSignedInWith: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const Home = ({ setSignedInWith }: HomeProps) => {
     const navigate = useNavigate();
+    const handleGetRoles = async () => {
+        const token = localStorage.getItem('token'); // Retrieve the token from local storage
+        if (token) {
+            try {
+                const response = await axios.get('http://localhost:8089/v1/finTrack/get-roles', {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Set the Authorization header
+                    },
+                });
+                console.log('Roles:', response.data);
+            } catch (error) {
+                console.error('Error fetching roles:', error);
+            }
+        }
+        else {
+            console.error('No token found');
+        }
+    };
+    const handleSignInWithGoogle = () => {
+        window.location.href = 'http://localhost:8089/oauth2/authorization/google'
+        // setSignedInWith("google")
+    }
+    const handleSignInWithGitHub = () => {
+        window.location.href = 'http://localhost:8089/oauth2/authorization/github'
+        // setSignedInWith("github")
+    }
 
     return (
         <>
@@ -24,8 +58,9 @@ const Home = () => {
                 justifyContent: "space-around",
                 margin: "auto"
             }}>
-                <Button variant="contained" onClick={() => navigate('/login')}>Login</Button>
-                <Button variant="outlined" onClick={() => navigate('/signup')}>SignUp</Button>
+                <Button variant="contained" onClick={handleSignInWithGoogle}><FcGoogle /> Sign In with Google</Button>
+                <Button variant="outlined" onClick={handleSignInWithGitHub}><IoLogoGithub /> Sign In with Github</Button>
+
             </Box>
         </>
     )

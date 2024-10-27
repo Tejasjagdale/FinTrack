@@ -1,19 +1,35 @@
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import './App.css';
+import OAuth2RedirectHandler from './auth/OAuth2RedirectHandler';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import UserDetails from './pages/UserDetails';
 
+
+const Login: React.FC = () => {
+  const handleLogin = () => {
+    window.location.href = 'http://localhost:8089/oauth2/authorization/github';
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <button onClick={handleLogin}>Login with GitHub</button>
+    </div>
+  );
+};
 
 const App: React.FC = () => {
+  const [signedInWith, setSignedInWith] = useState<string>("")
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
-    </Router>
+
+    <Routes>
+      {/* <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} /> */}
+      <Route path="/" element={<Home setSignedInWith={setSignedInWith} />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/user-details" element={<UserDetails signedInWith={signedInWith} />} />
+    </Routes>
+
   );
 };
 
