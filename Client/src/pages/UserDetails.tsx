@@ -1,6 +1,7 @@
-import { Grid, Typography } from "@mui/material"
+import { Button, Grid, Typography } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function UserDetails({ signedInWith }: { signedInWith: string }) {
 
@@ -18,14 +19,14 @@ function UserDetails({ signedInWith }: { signedInWith: string }) {
     }, [])
     console.log(signedInWith);
 
+    const navigate = useNavigate();
+    const handleNavigate = () => {
+        navigate("/dashboard")
+    }
     return (
         <Grid>
-            {user?.avatar_url != null ?
-                <><Typography>Welcome {user?.name}</Typography>
-                    <img src={user?.avatar_url} alt="user" /></> :
-                <><Typography>Welcome {user?.name}</Typography>
-                    <img src={user?.picture} alt="user" /></>
-            }
+            <Typography>Welcome {user?.name}</Typography>
+            <Button onClick={handleNavigate} variant="contained">Navigate to App</Button>
         </Grid>
     )
 }

@@ -4,7 +4,7 @@ import './App.css';
 import OAuth2RedirectHandler from './auth/OAuth2RedirectHandler';
 import Home from './pages/Home';
 import UserDetails from './pages/UserDetails';
-
+import Dashboard from "./pages/dashboard/index";
 
 const Login: React.FC = () => {
   const handleLogin = () => {
@@ -28,6 +28,7 @@ const App: React.FC = () => {
       <Route path="/" element={<Home setSignedInWith={setSignedInWith} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/user-details" element={<UserDetails signedInWith={signedInWith} />} />
+      <Route path="/dashboard" element={<Dashboard signedInWith={signedInWith} />} />
     </Routes>
 
   );

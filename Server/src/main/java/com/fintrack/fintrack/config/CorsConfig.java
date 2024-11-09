@@ -15,18 +15,18 @@ public class CorsConfig {
 
     @Value("${frontend-url}")
     private String frontendUrl;
+
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfiguration() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedHeaders("*")
-                        .allowedOrigins(frontendUrl)
-                        .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
-                        .allowCredentials(true);
+                        .allowedOrigins("http://localhost:5173")  // Front-end URL
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allowed HTTP methods
+                        .allowedHeaders("*")  // Allows any headers
+                        .allowCredentials(true);  // Allows credentials (cookies, authorization headers)
             }
         };
     }
-
 }
