@@ -68,6 +68,17 @@ const NewsRecommendedStocks: React.FC = () => {
         setFilters((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleCopy = async () => {
+        try {
+          const jsonString = JSON.stringify(recommendations, null, 2); // Convert JSON to a string
+          await navigator.clipboard.writeText(jsonString); // Copy to clipboard
+          alert("JSON copied to clipboard!");
+        } catch (error) {
+          console.error("Failed to copy JSON:", error);
+          alert("Failed to copy JSON.");
+        }
+      };
+
     return (
         <Box
             sx={{
@@ -112,7 +123,7 @@ const NewsRecommendedStocks: React.FC = () => {
                     <>
                         <Button
                             variant="contained"
-                            onClick={() => alert("feature is not yet implemented!!!!")}
+                            onClick={handleCopy}
                             startIcon={<ContentCopyIcon />}
                         >
                             Copy Raw
