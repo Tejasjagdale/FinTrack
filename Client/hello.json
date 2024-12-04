@@ -1,0 +1,72 @@
+[
+    {
+        "growwContractId": "GSTK500325",
+        "companyName": "Reliance Industries",
+        "companyShortName": "Reliance Industries",
+        "searchId": "reliance-industries-ltd",
+        "nseScriptCode": "RELIANCE",
+        "bseScriptCode": 500325,
+        "fullName": "Reliance Industries",
+        "parentCompany": "Reliance Industries",
+        "headquarters": "MUMBAI",
+        "ceo": "NA",
+        "managingDirector": "Shri. Mukesh Ambani",
+        "businessSummary": "Reliance Industries Limited is an India-based company, which is engaged in the activities of hydrocarbon exploration and production, petroleum refining and marketing, petrochemicals, advanced materials and composites, renewables (solar and hydrogen), retail and digital services. The Company's segments include Oil to Chemicals (O2C), Oil and Gas, Retail and Digital Services. O2C segment includes refining, petrochemicals, fuel retailing, aviation fuel and bulk wholesale marketing, and also includes transportation fuels, polymers, polyesters and elastomers. O2C business assets include aromatics, gasification, multi-feed and gas crackers along with downstream manufacturing facilities, logistics and supply-chain infrastructure. Oil and Gas segment is engaged in exploration, development and production of crude oil and natural gas. Retail segment includes consumer retail and a range of related services. Digital Services segment is engaged in the provision of a range of digital services.",
+        "websiteUrl": "https://www.ril.com/",
+        "latestNews": [
+            {
+                "id": "133379",
+                "title": "HDFC Bank Boosts Sensex & Nifty",
+                "summary": "Sensex and Nifty reached monthly highs, driven by HDFC Bank and Reliance.\nIndices rallied for third session, supported by financials and heavyweights.",
+                "url": "https://www.ndtvprofit.com/markets/sensex-extends-gains-nifty-near-24500-market-wrap-dec-3",
+                "imageUrl": null,
+                "pubDate": "2024-12-03T10:34:19",
+                "source": "NDTV Profit"
+            },
+            {
+                "id": "133251",
+                "title": "Nifty 50 Rallies Past Key Averages as Reliance, HDFC Bank Surge",
+                "summary": "Nifty 50 surpasses key moving averages, showing market strength.\nHeavyweight stocks like Reliance and HDFC Bank lead gains.",
+                "url": "https://www.livemint.com/market/stock-market-news/stock-market-today-nifty-50-above-100-dema-5-factors-driving-indian-stock-market-is-santa-claus-rally-around-11733212672526.html",
+                "imageUrl": null,
+                "pubDate": "2024-12-03T07:22:53",
+                "source": "livemint"
+            },
+            {
+                "id": "133162",
+                "title": "ONGC, Oil India Shares Surge as Windfall Tax Removal Boosts Upstream Producers",
+                "summary": "ONGC, Oil India, and Reliance shares rose after windfall tax removal.\nUpstream oil producers like ONGC and Oil India to benefit most.",
+                "url": "https://www.livemint.com/market/stock-market-news/ongc-oil-india-reliance-share-price-rise-upsteam-oil-producers-to-benefit-most-from-windfall-tax-being-scrapped-11733203187900.html",
+                "imageUrl": null,
+                "pubDate": "2024-12-03T06:21:25",
+                "source": "livemint"
+            }
+        ]
+    },
+    {
+        "growwContractId": "GSTK532540",
+        "companyName": "Tata Consultancy Services",
+        "companyShortName": "TCS",
+        "searchId": "tata-consultancy-services-ltd",
+        "nseScriptCode": "TCS",
+        "bseScriptCode": 532540,
+        "fullName": "Tata Consultancy Services",
+        "parentCompany": "Tata Consultancy Services",
+        "headquarters": "MUMBAI",
+        "ceo": "Mr. K. Krithivasan",
+        "managingDirector": "Mr. K. Krithivasan",
+        "businessSummary": "Tata Consultancy Services Limited (TCS) is an India-based company engaged in providing information technology (IT) services, consulting, and business solutions. It operates through Banking; Capital Markets; Consumer Goods and Distribution; Communications, Media, and Information Services; Education; Energy, Resources, and Utilities; Healthcare; High Tech; Insurance; Life Sciences; Manufacturing; Public Services; Retail; Travel and Logistics. The Company’s products include TCS ADD, TCS BaNCS, TCS BFSI Platforms, TCS CHROMA, TCS Customer Intelligence & Insights, TCS ERP on Cloud, TCS Intelligent Urban Exchange, Quartz-The Smart Ledgers, Jile, TCS Optumera, TCS TwinX, TCS TAP and TCS OmniStore. Its services portfolio consists of Cloud, Cognitive Business Operations, Consulting, Cybersecurity, Data and Analytics, Enterprise Solutions, IoT and Digital Engineering, Sustainability Services, TCS Interactive, TCS and AWS Cloud, TCS Enterprise Cloud, TCS and Google Cloud, TCS and Microsoft Cloud.",
+        "websiteUrl": "https://www.tcs.com/",
+        "latestNews": [
+            {
+                "id": "132951",
+                "title": "TCS Enhances Bank of Bhutan's Digital Core",
+                "summary": "TCS partners with Bank of Bhutan to modernize digital core using TCS BaNCS.\nThe platform will optimize operations and integrate with Bhutan's digital ecosystem.",
+                "url": "https://www.cnbctv18.com/market/tcs-share-price-bank-of-bhutan-bancs-global-banking-platfoem-19518456.htm",
+                "imageUrl": null,
+                "pubDate": "2024-12-03T05:58:18",
+                "source": "CNBC TV 18"
+            }
+        ]
+    }
+]
