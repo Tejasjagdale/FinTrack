@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import IndustrySelect from "./IndustrySelect";
 import IndexSelect from "./IndexSelect";
 
@@ -47,8 +47,6 @@ const StockFilter: React.FC<StockFilterProps> = ({ filters, onChange }) => {
       />
 
       <IndustrySelect filters={filters} onChange={onChange} />
-
-
       <IndexSelect filters={filters} onChange={onChange} />
 
 
