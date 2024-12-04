@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/finTrack
     username: postgres
-    password: Root
+    password: Tejas@2002
   jpa:
     properties:
       hibernate:

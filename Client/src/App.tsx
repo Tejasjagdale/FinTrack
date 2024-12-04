@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import './App.css';
 import OAuth2RedirectHandler from './auth/OAuth2RedirectHandler';
 import Home from './pages/Home';
+import Signup from './pages/Signup';
+import LandingPage from './pages/LandingPage';
+import StockFetcher from './pages/StockFetcher';
+import NewsRecommendedStocks from './pages/NewsRecommendedStocks';
 import UserDetails from './pages/UserDetails';
 import Dashboard from "./pages/dashboard/index";
 
@@ -12,10 +16,22 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <button onClick={handleLogin}>Login with GitHub</button>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home setSignedInWith={function (value: React.SetStateAction<string>): void {
+          throw new Error('Function not implemented.');
+        } } />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/searchPage" element={<LandingPage />} />
+        <Route path="/stocks/all" element={<StockFetcher />} />
+        <Route path="/stocks/recommendation/news" element={<NewsRecommendedStocks />} />
+      </Routes>
+    </Router>
+    // <div>
+    //   <h2>Login</h2>
+    //   <button onClick={handleLogin}>Login with GitHub</button>
+    // </div>
   );
 };
 

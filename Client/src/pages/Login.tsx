@@ -86,12 +86,14 @@ export default function Login() {
                                 label="Remember me"
                             />
                             <Button
-                                type="submit"
+                                // type="submit"
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
+                                <Link to="/searchPage" >
                                 Sign In
+                                </Link>
                             </Button>
                             <Grid container>
                                 <Grid item xs>
