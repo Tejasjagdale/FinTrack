@@ -1,4 +1,3 @@
-from typing import List, Union
 import models.bestPromt, models.bestPromtHE
 from service.dataToPromt import data_to_promt
 from service.fetchAllStocks import StockFilters, StockFetcher  # Assuming StockFetcher has fetch_all_stocks
