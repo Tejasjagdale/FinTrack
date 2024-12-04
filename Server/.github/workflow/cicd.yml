@@ -18,7 +18,7 @@ jobs:
       - name: Build Project
         run: mvn clean install -DskipTests
       - name: Login to docker hub
-        run: docker login -u hanseldsouza -p hansel@dsouza
+        run: docker login -u hanseldsouza -p Ambush@098
       - name: Build docker image
         run: docker build -t hanseldsouza/fintrack-0.0.1-SNAPSHOT .
       - name: Publish image to docker hub

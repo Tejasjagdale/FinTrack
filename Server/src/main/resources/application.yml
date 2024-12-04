@@ -18,13 +18,17 @@ spring:
       ddl-auto: update
     show-sql: true
   security:
+    user:
+      username: user
+      password: user
     oauth2:
       client:
         registration:
-#          google:
-#            client-id: your-google-client-id
-#            client-secret: your-google-client-secret
+          google:
+            client-id: 16591967139-cgecre92o500ih9e1g56a9d5vrs51h0u.apps.googleusercontent.com
+            client-secret: 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
           github:
-            client-id: Iv23liPr9iDUZ9R33TkS
-            client-secret: 9993bd8feb52503d6df5e42655f92b3863744ec5
-frontend-url: "http://localhost:8089"
+            client-id: Ov23liJP6IG2eTHxXrln
+            client-secret: 69e51e1a838539f5123e6d8124e73e54cee7e201
+            scope: read:user,user:email
+frontend-url: "http://localhost:5173"

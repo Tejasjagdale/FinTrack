@@ -1,0 +1,19 @@
+{
+    "nifty50":{
+        "companies":{
+            "Reliance":"2726",
+            "Tech Mahindra Ltd":"100068",
+            "Ambuja Cements Ltd":"163",
+            "Mahindra & Mahindra":"1973"
+        }
+    },
+    "days":{
+        "1M":30,
+        "6M":180,
+        "1Y":365,
+        "3Y":1095,
+        "5Y":1825,
+        "10Y":3650,
+        "MAX":10000
+    }
+}
