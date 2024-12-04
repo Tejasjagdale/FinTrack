@@ -1,4 +1,4 @@
-from ast import List
+from typing import List
 import requests
 
 def fetch_stock_details(search_id: str) -> dict:

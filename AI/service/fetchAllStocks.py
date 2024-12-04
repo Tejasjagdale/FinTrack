@@ -1,4 +1,4 @@
-from ast import List
+from typing import List
 from pydantic import BaseModel
 import requests
 import logging
@@ -76,10 +76,13 @@ class StockFetcher:
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Request error fetching stocks with filters {stock_filters}: {e}")
+            return []
         except ValueError as e:
             logger.error(f"Error parsing JSON response for filters {stock_filters}: {e}")
+            return []
         except Exception as e:
             logger.error(f"Unexpected error fetching stocks: {e}")
+            return []
 
     @staticmethod
     def parse_response(data: dict) -> List[dict]:
@@ -109,4 +112,4 @@ class StockFetcher:
             ]
         except Exception as e:
             logger.error(f"Error parsing response records: {e}")
-
+            return []
