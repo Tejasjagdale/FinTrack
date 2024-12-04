@@ -11,7 +11,7 @@ type HomeProps = {
     setSignedInWith: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Home = ({ setSignedInWith }: HomeProps) => {
+const Home = ({ setSignedInWith }: HomeProps | null | undefined) => {
     const navigate = useNavigate();
     const handleGetRoles = async () => {
         const token = localStorage.getItem('token'); // Retrieve the token from local storage

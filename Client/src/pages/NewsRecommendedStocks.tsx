@@ -112,7 +112,7 @@ const NewsRecommendedStocks: React.FC = () => {
                     <>
                         <Button
                             variant="contained"
-                            onClick={fetchRecommendations}
+                            onClick={() => alert("feature is not yet implemented!!!!")}
                             startIcon={<ContentCopyIcon />}
                         >
                             Copy Raw
