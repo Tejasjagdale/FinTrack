@@ -19,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/live")
+@app.get("/")
 def read_root():
     return "Server is Live"
 
