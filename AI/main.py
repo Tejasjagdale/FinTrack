@@ -6,10 +6,9 @@ from pydantic import BaseModel # type: ignore
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-
 app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -20,8 +19,8 @@ app.add_middleware(
 )
 
 @app.get("/")
-def read_root():
-    return "Server is Live"
+async def root():
+    return "server is live"
 
 @app.post("/allstocks")
 async def all_stocks(stockFilters: StockFilters):
