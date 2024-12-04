@@ -1,7 +1,7 @@
-from ast import Dict, List
+from ast import List
 import requests
 
-def fetch_stock_details(search_id: str) -> Dict[str, any]:
+def fetch_stock_details(search_id: str) -> dict:
     """
     Fetches additional details for a stock by its search ID.
     """
@@ -31,7 +31,7 @@ def fetch_stock_details(search_id: str) -> Dict[str, any]:
         print(f"Error fetching details for {search_id}: {e}")
         return {}
 
-def attach_details_to_stocks(stocks_data: List[Dict[str, any]]) -> List[Dict[str, any]]:
+def attach_details_to_stocks(stocks_data: List[dict]) -> List[dict]:
     """
     Attaches additional details to each stock in the provided stock data.
     """
