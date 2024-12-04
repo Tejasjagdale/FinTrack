@@ -3,8 +3,9 @@ import models.bestPromt, models.bestPromtHE
 from service.dataToPromt import data_to_promt
 from service.fetchAllStocks import StockFilters, StockFetcher  # Assuming StockFetcher has fetch_all_stocks
 from pydantic import BaseModel # type: ignore
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI # type: ignore
+from fastapi.middleware.cors import CORSMiddleware # type: ignore
+from fastapi.staticfiles import StaticFiles # type: ignore
 
 app = FastAPI()
 
