@@ -42,7 +42,7 @@ const NewsRecommendedStocks: React.FC = () => {
             setIsLoading(true)
             setError(""); // Clear previous errors
             const response = await axios.post(
-                "http://127.0.0.1:8000/get/stocks/Recommendation/news",
+                "https://fin-track-ai.vercel.app/get/stocks/Recommendation/news",
                 filters
             );
 

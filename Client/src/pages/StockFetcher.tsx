@@ -36,7 +36,7 @@ const StockFetcher: React.FC = () => {
     try {
       setIsLoading(true)
       setError(""); // Clear previous errors
-      const response = await axios.post("http://127.0.0.1:8000/allstocks", filters);
+      const response = await axios.post("https://fin-track-ai.vercel.app/allstocks", filters);
       setStocks(response.data);
       setIsLoading(false)
     } catch (err) {
