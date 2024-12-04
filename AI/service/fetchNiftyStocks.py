@@ -1,5 +1,4 @@
 import requests
-import xml.etree.ElementTree as ET
 
 def fetch_nifty100():
     try:

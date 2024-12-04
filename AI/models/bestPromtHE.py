@@ -1,4 +1,4 @@
-import google.generativeai as genai
+import google.generativeai as genai # type: ignore
 import time
 
 from utils.extractCompanyName import extract_company_name
