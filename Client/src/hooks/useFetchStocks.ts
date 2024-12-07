@@ -26,7 +26,7 @@ const useFetchStocks = (filters: StockFilters) => {
     try {
       setIsLoading(true);
       setError(""); // Clear previous errors
-      await axios.post("http://127.0.0.1:8000/allstocks", filters);
+      await axios.post("https://fin-track-ai.vercel.app/allstocks", filters);
       
       // Start polling to check status
       pollForStatus();
@@ -41,7 +41,7 @@ const useFetchStocks = (filters: StockFilters) => {
   const pollForStatus = async () => {
     const interval = setInterval(async () => {
       try {
-        const statusResponse = await axios.get("http://127.0.0.1:8000/check_status");
+        const statusResponse = await axios.get("https://fin-track-ai.vercel.app/check_status");
         const { status, data } = statusResponse.data;
         
         if (status === "completed") {
@@ -68,7 +68,7 @@ const useFetchStocks = (filters: StockFilters) => {
   useEffect(() => {
     const checkInitialStatus = async () => {
       try {
-        const statusResponse = await axios.get("http://127.0.0.1:8000/check_status");
+        const statusResponse = await axios.get("https://fin-track-ai.vercel.app/check_status");
         const { status, data } = statusResponse.data;
 
         if (status === "completed") {

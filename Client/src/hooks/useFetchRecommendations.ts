@@ -31,7 +31,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
             setFetchingInProgress(true); // Set the state to show fetching is in progress
 
             // Start fetching recommendations
-            await axios.post("http://127.0.0.1:8000/get/stocks/Recommendation/news", filters);
+            await axios.post("https://fin-track-ai.vercel.app/get/stocks/Recommendation/news", filters);
 
             // Start polling to check the status
             pollRecommendationStatus();
@@ -46,7 +46,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
     const pollRecommendationStatus = async () => {
         try {
             const intervalId = setInterval(async () => {
-                const response = await axios.get("http://127.0.0.1:8000/check_recommendation_status");
+                const response = await axios.get("https://fin-track-ai.vercel.app/check_recommendation_status");
 
                 if (response.data.status === "completed") {
                     clearInterval(intervalId); // Stop polling when completed
@@ -78,7 +78,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
     useEffect(() => {
         const checkInitialRecommendationStatus = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/check_recommendation_status");
+                const response = await axios.get("https://fin-track-ai.vercel.app/check_recommendation_status");
                 const { status, data } = response.data;
 
                 if (status === "completed") {
