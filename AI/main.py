@@ -27,6 +27,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class StockFiltersPlus(StockFilters):
+    modelType: str
+
 @app.get("/")
 async def root():
     return "server is live"
@@ -53,6 +56,8 @@ async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTa
 # Endpoint to check the status and return the data once the task is completed
 @app.get("/check_status")
 async def check_status():
+    global status
+    logging(f"Status is : {status}")
     if os.path.exists("stocknews.json"):
             try:
                 with open("stocknews.json", "r") as json_file:
@@ -67,11 +72,6 @@ async def check_status():
     else:
         return {"status": "pending", "message": "Task has not been started yet."}
         
-    
-
-
-class StockFiltersPlus(StockFilters):
-    modelType: str
 
 status_recommendation = "pending"
 @app.post("/get/stocks/Recommendation/news")
@@ -95,7 +95,7 @@ async def stock_recommendation(stockFiltersPlus: StockFiltersPlus, background_ta
 @app.get("/check_recommendation_status")
 async def check_recommendation_status():
     global status_recommendation  # Declare it as global
-    
+    logging(f"Status is : {status_recommendation}")
     if os.path.exists("geminiList.json"):
         try:
             with open("geminiList.json", "r") as json_file:
