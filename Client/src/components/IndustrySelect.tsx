@@ -45,8 +45,7 @@ const sectors = [
             "15": "Bank - Private",
             "16": "Bank - Public",
         },
-    },
-    // Add other sectors here...
+    }
 ];
 
 const IndustrySelect: React.FC<StockFilterProps> = ({ filters, onChange }) => {
@@ -63,9 +62,10 @@ const IndustrySelect: React.FC<StockFilterProps> = ({ filters, onChange }) => {
                 }}
                 renderValue={(selected) => (selected as string[]).join(", ")}
             >
-                {sectors.map((sector) => (
-                    <React.Fragment key={sector.sector}>
+                {sectors.map((sector) => {
+                    const items = [
                         <ListSubheader
+                            key={`header-${sector.sector}`}
                             sx={{
                                 backgroundColor: "#333333",
                                 color: "#ffffff",
@@ -73,17 +73,24 @@ const IndustrySelect: React.FC<StockFilterProps> = ({ filters, onChange }) => {
                             }}
                         >
                             {sector.sector}
-                        </ListSubheader>
-                        {Object.entries(sector.industries).map(([key, industry]) => (
-                            <MenuItem key={key} value={industry} sx={{
-                                backgroundColor: "#333333",
-                                color: "#ffffff",
-                            }}>
+                        </ListSubheader>,
+                        ...Object.entries(sector.industries).map(([key, industry]) => (
+                            <MenuItem
+                                key={key}
+                                value={industry}
+                                sx={{
+                                    backgroundColor: "#333333",
+                                    color: "#ffffff",
+                                }}
+                            >
                                 {industry}
                             </MenuItem>
-                        ))}
-                    </React.Fragment>
-                ))}
+                        )),
+                    ];
+
+                    return items;
+                })}
+
             </Select>
         </FormControl>
     );

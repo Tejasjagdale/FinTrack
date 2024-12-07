@@ -1,5 +1,8 @@
 import React from "react";
 import { Box, TextField } from "@mui/material";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Dayjs } from "dayjs";
 import IndustrySelect from "./IndustrySelect";
 import IndexSelect from "./IndexSelect";
 
@@ -13,6 +16,8 @@ interface StockFilters {
   industry: string[];
   index: string[];
   market_cap: MarketCap;
+  fromDate: Dayjs;
+  toDate: Dayjs;
 }
 
 interface StockFilterProps {
@@ -21,6 +26,15 @@ interface StockFilterProps {
 }
 
 const StockFilter: React.FC<StockFilterProps> = ({ filters, onChange }) => {
+  const datePickerStyles = {
+    backgroundColor: "#333333",
+    color: "#ffffff",
+    border: "1px solid #555555",
+    borderRadius: "5px",
+    padding: "8px",
+    width: "100%",
+  };
+
   return (
     <Box
       sx={{
@@ -48,7 +62,6 @@ const StockFilter: React.FC<StockFilterProps> = ({ filters, onChange }) => {
 
       <IndustrySelect filters={filters} onChange={onChange} />
       <IndexSelect filters={filters} onChange={onChange} />
-
 
       <Box sx={{ display: "flex", gap: 2 }}>
         <TextField
@@ -80,6 +93,28 @@ const StockFilter: React.FC<StockFilterProps> = ({ filters, onChange }) => {
           InputLabelProps={{ style: { color: "#ffffff" } }}
           inputProps={{ style: { color: "#ffffff" } }}
           sx={{ "& .MuiOutlinedInput-root": { "& fieldset": { borderColor: "#555555" } } }}
+        />
+      </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <label style={{ color: "#ffffff" }}>From Date</label>
+        <ReactDatePicker
+          selected={filters.fromDate}
+          onChange={(date) => onChange("fromDate", date)}
+          showTimeSelect
+          dateFormat="MMMM d, yyyy h:mm aa"
+          customInput={<input style={datePickerStyles} />}
+        />
+      </Box>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <label style={{ color: "#ffffff" }}>To Date</label>
+        <ReactDatePicker
+          selected={filters.toDate}
+          onChange={(date) => onChange("toDate", date)}
+          showTimeSelect
+          dateFormat="MMMM d, yyyy h:mm aa"
+          customInput={<input style={datePickerStyles} />}
         />
       </Box>
     </Box>

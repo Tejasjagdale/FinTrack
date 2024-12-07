@@ -43,3 +43,18 @@
 .read-the-docs {
   color: #888;
 }
+
+.react-datepicker__header {
+  background-color: #333333;
+  border-bottom: 1px solid #555555;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header {
+  color: #ffffff;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__time-list-item:hover {
+  background-color: #555555;
+}

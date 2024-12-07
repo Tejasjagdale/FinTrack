@@ -12,7 +12,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({
   newsImpact,
   impactReason,
 }) => {
-  const isPositiveImpact = newsImpact.toLowerCase() === "positive";
+  const isPositiveImpact = newsImpact?.toLowerCase() === "positive";
 
   return (
     <Box

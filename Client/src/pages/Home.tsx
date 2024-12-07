@@ -60,8 +60,7 @@ const Home = ({ setSignedInWith }: HomeProps | null | undefined) => {
             }}>
                 <Button variant="contained" onClick={() => navigate('/login')}>Login</Button>
                 <Button variant="outlined" onClick={() => navigate('/signup')}>SignUp</Button>
-                <Button variant="contained" color='warning' onClick={() => navigate('/stocks/all')}>All stocks</Button>
-                <Button variant="outlined" color="success" onClick={() => navigate('/stocks/recommendation/news')}>stocks Recommendation</Button>
+                <Button variant="contained" color='warning' onClick={() => navigate('/dashboard')}>Dashboard</Button>
             </Box>
         </>
     )

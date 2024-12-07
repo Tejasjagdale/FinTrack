@@ -39,7 +39,7 @@ def get_responses_for_prompts(prompts):
         company_name = extract_company_name(prompt)
         try:
             response = chat_session.send_message(prompt)
-            responses.append(company_name+ " " +response.text)
+            responses.append(response.text)
             time.sleep(5)
         except:
           print("An exception occurred for "+company_name)

@@ -1,92 +1,106 @@
-import { Button, Grid, Input, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import StockCharts from './StockCharts'
-import companyData from './data.json';
-import { fetchStockData } from '../../services/fetchStockData';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { Box, AppBar, Toolbar, Tabs, Tab, Drawer, List, ListItem, ListItemText, useMediaQuery, Typography } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import NewsRecommendedStocks from "../NewsRecommendedStocks";
+import StockFetcher from "../StockFetcher";
 
-interface Dataset {
-    metric: string;
-    label: string;
-    values: [string, number | string | number[]][];
-}
+const theme = createTheme({
+    palette: {
+        mode: "dark",
+        background: { default: "#242424", paper: "#333333" },
+        primary: { main: "#ffffff" },
+    },
+});
 
-interface ApiResponse {
-    datasets: Dataset[];
-}
+const menuItems = ["Home", "StockNews", "Recommendation", "LiveMint"];
 
-function index({ signedInWith }: any) {
+const Dashboard: React.FC = () => {
+    const [selectedMenu, setSelectedMenu] = useState("Home");
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-    const [data, setData] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const query = "Price-DMA50-DMA200-Volume"
-    const [days, setDays] = useState<string | null | unknown>(null)
-    const [companyId, setCompanyId] = useState<string | null | unknown>(null);
+    const handleMenuClick = (menu: string) => {
+        setSelectedMenu(menu);
 
-    const handleAddDays = (e: any) => {
-        setDays(e.target.value)
-    }
+        window.history.replaceState(null, "", `#${menu}`);
+    };
 
-    const handleSearchQuery = () => {
-        if (companyId && days) {
-            axios
-                .get('http://localhost:8089/v1/finTrack/stockdata?companyId=' + companyId + "&query=" + query + "&days=" + days, {
-                    withCredentials: true,
-                })
-                .then((response) => {
-                    setData(response.data.datasets);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    setError('Error fetching data');
-                    setLoading(false);
-                });
+    const renderContent = () => {
+        switch (selectedMenu) {
+            case "Home":
+                return <Typography variant="h6">Select a Menu</Typography>;
+            case "StockNews":
+                return <StockFetcher />;
+            case "Recommendation":
+                return <NewsRecommendedStocks />
+            default:
+                return <></>;
         }
-    }
+    };
+
+    useEffect(() => {
+        // Check the hash in the URL
+        const hash = window.location.hash.slice(1); // Remove the "#" from the hash
+        if (hash) {
+            setSelectedMenu(hash);
+        }
+    }, []);
 
     return (
-        <Grid width={"100%"}>
-            <Typography>Stock Data</Typography>
-            <Typography>Select Your Stocks</Typography>
-            <Grid sx={{ display: 'flex', flexDirection: 'column' }}>
-                {Object.entries(companyData.nifty50.companies).map(([companyName, companyValue]: [string, unknown], index) => {
-                    return (
-                        <Button key={index} onClick={() => setCompanyId(companyValue)}>
-                            {companyName}
-                        </Button>
-                    );
-                })}
-                <TextField
-                    label="Enter a number"
-                    variant="outlined"
-                    value={days}
-                    onChange={handleAddDays}
-                    type="number"
-                    fullWidth
-                    color='primary'
-                    inputProps={{
-                        inputMode: 'numeric',
-                        pattern: '[0-9]*',
-                        style: { color: 'white' } // Set text color to white
-                    }}
-                    sx={{
-                        '& .MuiInputLabel-root': { color: 'white' }, // Label color
-                        '& .MuiOutlinedInput-root': {
-                            '& input': {
-                                color: 'white', // Input text color
-                            },
-                            '& fieldset': {
-                                borderColor: 'white', // Border color
-                            },
-                        },
-                    }}
-                />
-            </Grid>
-            <Button onClick={handleSearchQuery}>Search</Button>
-            {data && <StockCharts datasets={data} />}
-        </Grid>
-    )
-}
+        <ThemeProvider theme={theme}>
+            <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: theme.palette.background.default }}>
+                {isMobile ? (
+                    <>
+                        <AppBar position="static">
+                            <Toolbar>
+                                <Tabs
+                                    value={selectedMenu}
+                                    onChange={(e, value) => handleMenuClick(value)}
+                                    textColor="inherit"
+                                    indicatorColor="primary"
+                                    variant="scrollable"
+                                >
+                                    {menuItems.map((menu) => (
+                                        <Tab key={menu} label={menu} value={menu} />
+                                    ))}
+                                </Tabs>
+                            </Toolbar>
+                        </AppBar>
+                        <Box sx={{ flexGrow: 1, p: 3, backgroundColor: theme.palette.background.default, color: "#fff" }}>
+                            {renderContent()}
+                        </Box>
+                    </>
+                ) : (
+                    <Box sx={{ display: "flex", flexDirection: "row", flexGrow: 1 }}>
+                        <Drawer
+                            variant="permanent"
+                            sx={{
+                                width: 240,
+                                "& .MuiDrawer-paper": { width: 240, backgroundColor: theme.palette.background.paper, color: "#fff" },
+                            }}
+                        >
+                            <List>
+                                {menuItems.map((menu) => (
+                                    <ListItem button key={menu} onClick={() => handleMenuClick(menu)}>
+                                        <ListItemText primary={menu} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Drawer>
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                p: 3,
+                                backgroundColor: theme.palette.background.default,
+                                color: "#fff",
+                            }}
+                        >
+                            {renderContent()}
+                        </Box>
+                    </Box>
+                )}
+            </Box>
+        </ThemeProvider>
+    );
+};
 
-export default index
+export default Dashboard;

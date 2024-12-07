@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import RecommendationCard from "../components/RecommendationCard";
 import StockFiltersBox from "../components/StockFiltersBox";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
-interface Recommendation {
-    companyName: string;
-    newsImpact: string;
-    impactReason: string;
-}
+import { useFetchRecommendations } from "../hooks/useFetchRecommendations"; // Import custom hook
 
 interface MarketCap {
     min: number;
@@ -21,8 +15,21 @@ interface StockFilters {
     industry: string[];
     index: string[];
     market_cap: MarketCap;
+    fromDate: Date;
+    toDate: Date;
     modelType: string; // "normal" or "Epoch"
 }
+
+export const handleCopy = async (recommendations: unknown[]) => {
+    try {
+        const jsonString = JSON.stringify(recommendations, null, 2); // Convert JSON to a string
+        await navigator.clipboard.writeText(jsonString); // Copy to clipboard
+        alert("JSON copied to clipboard!");
+    } catch (error) {
+        console.error("Failed to copy JSON:", error);
+        alert("Failed to copy JSON.");
+    }
+};
 
 const NewsRecommendedStocks: React.FC = () => {
     const [filters, setFilters] = useState<StockFilters>({
@@ -30,54 +37,34 @@ const NewsRecommendedStocks: React.FC = () => {
         industry: [],
         index: [],
         market_cap: { min: 50000000000, max: 3000000000000000 },
+        fromDate: new Date(), // Current timestamp
+        toDate: new Date(Date.now() - 24 * 60 * 60 * 1000), // 24 hours back
         modelType: "normal",
     });
-    const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-
-    const fetchRecommendations = async () => {
-        try {
-            setIsLoading(true)
-            setError(""); // Clear previous errors
-            const response = await axios.post(
-                "https://fin-track-ai.vercel.app/get/stocks/Recommendation/news",
-                filters
-            );
-
-            // Parse API response to structured data
-            const data = response.data.map((item: string) => {
-                const [, companyName, newsImpact, impactReason] =
-                    item.match(
-                        /companyName:\s*(.*?),\s*newsImpact:\s*(.*?),\s*impactReason:\s*(.*)/
-                    ) || [];
-                return { companyName, newsImpact, impactReason };
-            });
-
-            setRecommendations(data);
-            setIsLoading(false)
-        } catch (err) {
-            setIsLoading(false)
-            console.error("Error fetching recommendations:", err);
-            setError("Failed to fetch recommendations. Please try again later.");
-        }
-    };
+    // Use custom hook
+    const {
+        recommendations,
+        error,
+        isLoading,
+        fetchingInProgress,
+        fetchRecommendations
+    } = useFetchRecommendations(filters);
 
     const handleChange = (field: keyof StockFilters, value: any) => {
         setFilters((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleCopy = async () => {
-        try {
-          const jsonString = JSON.stringify(recommendations, null, 2); // Convert JSON to a string
-          await navigator.clipboard.writeText(jsonString); // Copy to clipboard
-          alert("JSON copied to clipboard!");
-        } catch (error) {
-          console.error("Failed to copy JSON:", error);
-          alert("Failed to copy JSON.");
-        }
-      };
+    const [filter, setFilter] = useState<string>("all");
+
+    const handleFilterChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setFilter(event.target.value as string);
+    };
+
+    const filteredRecommendations = recommendations.filter((rec: any) => {
+        if (filter === "all") return true; // Show all if "all" is selected
+        return rec.newsImpact.toLowerCase() === filter;
+    });
 
     return (
         <Box
@@ -107,7 +94,7 @@ const NewsRecommendedStocks: React.FC = () => {
                 }}
                 onClick={fetchRecommendations}
                 startIcon={isLoading && <CircularProgress color="info" size="20px" />}
-                disabled={isLoading}
+                disabled={isLoading || fetchingInProgress} // Disable while fetching or in progress
             >
                 Fetch Recommendations
             </Button>
@@ -121,14 +108,33 @@ const NewsRecommendedStocks: React.FC = () => {
             <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}>
                 {recommendations.length > 0 ? (
                     <>
-                        <Button
-                            variant="contained"
-                            onClick={handleCopy}
-                            startIcon={<ContentCopyIcon />}
-                        >
-                            Copy Raw
-                        </Button>
-                        {recommendations.map((rec, index) => (
+                        <Box>
+                            <Button
+                                variant="contained"
+                                onClick={() => handleCopy(recommendations)}
+                                startIcon={<ContentCopyIcon />}
+                            >
+                                Copy Raw
+                            </Button>
+                            <FormControl variant="outlined" size="small" sx={{ minWidth: 150 }}>
+                                <InputLabel>Filter</InputLabel>
+                                <Select
+                                    value={filter}
+                                    onChange={handleFilterChange}
+                                    label="Filter"
+                                    sx={{
+                                        backgroundColor: "#333333",
+                                        color: "#ffffff",
+                                    }}
+                                >
+                                    <MenuItem value="all">All</MenuItem>
+                                    <MenuItem value="positive">Positive</MenuItem>
+                                    <MenuItem value="neutral">Neutral</MenuItem>
+                                    <MenuItem value="negative">Negative</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        {filteredRecommendations.map((rec, index) => (
                             <RecommendationCard
                                 key={index}
                                 companyName={rec.companyName}

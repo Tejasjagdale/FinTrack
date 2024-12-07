@@ -10,7 +10,7 @@ const indices = {
     "Nifty Bank": "Nifty Bank",
     "Nifty Next 50": "Nifty Next 50",
     "Nifty Midcap 100": "Nifty Midcap 100",
-    SENSEX: "SENSEX",
+    "SENSEX": "SENSEX",
     "Nifty 50": "Nifty 50",
     "Nifty 100": "Nifty 100",
     "BSE 100": "BSE 100",

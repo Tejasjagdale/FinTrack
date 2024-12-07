@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { CompanyNewsCard } from "../components/CompanyNewsCard";
-import StockFilter from "../components/StockFiltersBox";
+import StockFilter from "../components/StockFiltersBox"; // Import custom hook
+import useFetchStocks from "../hooks/useFetchStocks";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { handleCopy } from "./NewsRecommendedStocks";
 
 interface MarketCap {
   min: number;
@@ -19,6 +16,8 @@ interface StockFilters {
   industry: string[];
   index: string[];
   market_cap: MarketCap;
+  fromDate: Date;
+  toDate: Date;
 }
 
 const StockFetcher: React.FC = () => {
@@ -27,24 +26,12 @@ const StockFetcher: React.FC = () => {
     industry: [],
     index: [],
     market_cap: { min: 50000000000, max: 3000000000000000 },
+    fromDate: new Date(), // Current timestamp
+    toDate: new Date(Date.now() - 24 * 60 * 60 * 1000), // 24 hours back
   });
-  const [stocks, setStocks] = useState<any[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const fetchStocks = async () => {
-    try {
-      setIsLoading(true)
-      setError(""); // Clear previous errors
-      const response = await axios.post("https://fin-track-ai.vercel.app/allstocks", filters);
-      setStocks(response.data);
-      setIsLoading(false)
-    } catch (err) {
-      setIsLoading(false)
-      console.error("Error fetching stocks:", err);
-      setError("Failed to fetch stocks. Please try again later.");
-    }
-  };
+  // Use the custom hook to fetch stocks data
+  const { stocks, error, isLoading, taskStatus, fetchStocks } = useFetchStocks(filters);
 
   const handleChange = (field: keyof StockFilters, value: any) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
@@ -65,10 +52,15 @@ const StockFetcher: React.FC = () => {
       <StockFilter filters={filters} onChange={handleChange} />
       <Button
         variant="contained"
-        sx={{ mt: 3, backgroundColor: "#555555", color: "#ffffff", "&:hover": { backgroundColor: "#777777" } }}
+        sx={{
+          mt: 3,
+          backgroundColor: "#555555",
+          color: "#ffffff",
+          "&:hover": { backgroundColor: "#777777" },
+        }}
         onClick={fetchStocks}
         startIcon={isLoading && <CircularProgress color="info" size="20px" />}
-        disabled={isLoading}
+        disabled={isLoading || taskStatus === "in-progress"}
       >
         Fetch Stocks
       </Button>
@@ -79,12 +71,27 @@ const StockFetcher: React.FC = () => {
         </Typography>
       )}
 
-      <Box sx={{ mt: 4, textAlign: "center" }}>
+      {taskStatus === "in-progress" && (
+        <Typography sx={{ mt: 2 }}>Fetching stocks, please wait...</Typography>
+      )}
+
+      {taskStatus === "error" && (
+        <Typography color="error" sx={{ mt: 2 }}>
+          Error occurred. Please try again later.
+        </Typography>
+      )}
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}>
         <Typography variant="h6">Fetched Stocks</Typography>
         {stocks.length > 0 ?
-          stocks?.map((stock) => {
-            return <CompanyNewsCard data={stock} />
-          })
+          <><Button
+            variant="contained"
+            onClick={() => handleCopy(stocks)}
+            startIcon={<ContentCopyIcon />}
+            sx={{ marginBottom: "2px" }}
+          >
+            Copy Raw
+          </Button>{stocks?.map((stock, index) => <CompanyNewsCard key={index} data={stock} />)}</>
           : (
             <Typography>No stocks fetched yet.</Typography>
           )}

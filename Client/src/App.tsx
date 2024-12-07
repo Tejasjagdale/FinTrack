@@ -35,7 +35,7 @@ const App: React.FC = () => {
       />
       <Route 
         path="/dashboard" 
-        element={<Dashboard signedInWith={signedInWith} />} 
+        element={<Dashboard />} 
       />
       <Route 
         path="/oauth2/redirect" 

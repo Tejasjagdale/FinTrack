@@ -7,13 +7,23 @@ import pytz
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+import requests
+import logging
+from datetime import datetime, timedelta
+import pytz
+
 # Constants for API
 NEWS_API_URL = "https://groww.in/v1/api/groww-news/v2/stocks/news"
 DEFAULT_TIME_WINDOW_HOURS = 24
 
+# Utility function to check if it's Monday
+def is_monday(current_time: datetime) -> bool:
+    return current_time.weekday() == 0  # 0 is Monday in Python's datetime module
+
 def fetch_stock_news(groww_company_id, time_window_hours=DEFAULT_TIME_WINDOW_HOURS):
     """
     Fetches and filters news for a stock by Groww Company ID within the given time window.
+    If it's Monday, it fetches news from the past weekend (Saturday and Sunday).
     """
     try:
         # Define the API URL
@@ -30,9 +40,17 @@ def fetch_stock_news(groww_company_id, time_window_hours=DEFAULT_TIME_WINDOW_HOU
             logger.warning(f"No news found for company ID: {groww_company_id}")
             return []
 
-        # Define the time range (last 'time_window_hours' hours)
+        # Define the current time
         current_time = datetime.now(pytz.utc)
-        start_time = current_time - timedelta(hours=time_window_hours)
+
+        # If it's Monday, adjust the time window to include the weekend (Saturday and Sunday)
+        if is_monday(current_time):
+            # Calculate the time for last Friday at midnight
+            last_friday = current_time - timedelta(days=(current_time.weekday() + 3))  # Going back to Friday
+            start_time = last_friday.replace(hour=0, minute=0, second=0, microsecond=0)
+        else:
+            # Calculate the start time as 'time_window_hours' ago from current time
+            start_time = current_time - timedelta(hours=time_window_hours)
 
         # Filter news based on publication time
         filtered_news = []
