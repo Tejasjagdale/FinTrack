@@ -16,7 +16,7 @@ async def fetch_all_stocks_json(stock_filters: StockFilters):
         stock_data = await StockFetcher().fetch_all_stocks(stock_filters)
         logging.info(f"***** code moved ahead of API calls  with length {stock_data}****")
 
-        logging.info(f"file exists : {os.path.exists("stocknews.json")}")
+        logging.info(f"file exists : {os.path.exists('stocknews.json')}")
         if os.path.exists("stocknews.json"):
             logging.info(f"***** Json file got removed ****")
             os.remove("stocknews.json")
