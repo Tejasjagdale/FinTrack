@@ -14,7 +14,9 @@ async def fetch_all_stocks_json(stock_filters: StockFilters):
     try:
         # Fetching stocks
         stock_data = await StockFetcher().fetch_all_stocks(stock_filters)
+        logging.info(f"***** code moved ahead of API calls  with length {len(stock_data)}****")
         if os.path.exists("stocknews.json"):
+            logging.info(f"***** Json file got removed ****")
             os.remove("stocknews.json")
         
         # Writing the fetched data to a JSON file
@@ -23,6 +25,7 @@ async def fetch_all_stocks_json(stock_filters: StockFilters):
         
         # Set the status to "completed" after successful execution
         status = "completed"
+        logging.info(f"status is : {status}")
         return
     
     except Exception as e:

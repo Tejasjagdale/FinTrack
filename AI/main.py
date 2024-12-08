@@ -27,8 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class StockFiltersPlus(StockFilters):
-    modelType: str
 
 @app.get("/")
 async def root():
@@ -46,7 +44,7 @@ async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTa
     try:
         # Start the background task to fetch the stocks asynchronously
         background_tasks.add_task(fetch_all_stocks_json, stock_filters)
-        
+        logging.info(f"***** fetch al stocks task is completed ****")
         return {"status": "in-progress", "message": "Your request has been received."}
     
     except Exception as e:
@@ -71,7 +69,10 @@ async def check_status():
         return {"status": "in-progress", "message": "Fetching data, please wait."}
     else:
         return {"status": "pending", "message": "Task has not been started yet."}
-        
+
+
+class StockFiltersPlus(StockFilters):
+    modelType: str
 
 status_recommendation = "pending"
 @app.post("/get/stocks/Recommendation/news")
