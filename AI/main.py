@@ -44,7 +44,7 @@ async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTa
     try:
         # Start the background task to fetch the stocks asynchronously
         background_tasks.add_task(fetch_all_stocks_json, stock_filters)
-        logging.info(f"***** fetch al stocks task is completed ****")
+        
         return {"status": "in-progress", "message": "Your request has been received."}
     
     except Exception as e:
