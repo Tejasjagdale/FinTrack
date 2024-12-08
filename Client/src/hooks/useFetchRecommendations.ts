@@ -78,7 +78,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
           setFetchingInProgress(false);
           setIsPolling(false); // Reset polling flag
         }
-      }, 5000); // Poll every 5 seconds
+      }, 10000); // Poll every 5 seconds
     } catch (err) {
       setIsLoading(false);
       setError("Error checking recommendation status. Please try again later.");
