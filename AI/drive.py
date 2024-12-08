@@ -1,15 +1,11 @@
 import json
-import os
 from googleapiclient.discovery import build # type: ignore
 from googleapiclient.http import MediaFileUpload,MediaIoBaseUpload,MediaIoBaseDownload # type: ignore
 from google.oauth2.service_account import Credentials # type: ignore
 import io
-    
-SERVICE_ACCOUNT_JSON = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
 
-if not SERVICE_ACCOUNT_JSON:
-        raise ValueError("Environment variable 'GOOGLE_SERVICE_ACCOUNT_JSON' not set.")
-
+# Path to your service account JSON file
+SERVICE_ACCOUNT_FILE = 'drive_service.json'
 
 # Define the required scopes
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
@@ -19,7 +15,7 @@ FOLDERID =  "1Gx2CCfwsD2ED1RnmbYd1AWRBImY0_dGR"
 def upload_json_to_drive(json_data, file_name):
     """Upload a JSON object to Google Drive using a service account."""
     # Authenticate using the service account
-    creds = Credentials.from_service_account_file(json.loads(SERVICE_ACCOUNT_JSON), scopes=SCOPES)
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
 
     # Convert the JSON data to a bytes buffer
@@ -42,7 +38,7 @@ def upload_json_to_drive(json_data, file_name):
 def download_json_from_drive(file_name):
     """Download a JSON file from Google Drive within a specific folder by its name and return it as a JSON object."""
     # Authenticate using the service account
-    creds = Credentials.from_service_account_file(json.loads(SERVICE_ACCOUNT_JSON), scopes=SCOPES)
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
 
     try:
@@ -85,7 +81,7 @@ def download_json_from_drive(file_name):
 def delete_file_from_drive(file_name):
     """Delete a file from Google Drive within a specific folder by its name."""
     # Authenticate using the service account
-    creds = Credentials.from_service_account_file(json.loads(SERVICE_ACCOUNT_JSON), scopes=SCOPES)
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
 
     try:
@@ -112,7 +108,7 @@ def delete_file_from_drive(file_name):
 def check_file_exists_in_drive(file_name):
     """Check if a file exists in a specific Google Drive folder by its name."""
     # Authenticate using the service account
-    creds = Credentials.from_service_account_file(json.loads(SERVICE_ACCOUNT_JSON), scopes=SCOPES)
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
 
     try:
