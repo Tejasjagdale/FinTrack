@@ -61,12 +61,13 @@ export const useFetchRecommendations = (filters: StockFilters) => {
         if (response.data.status === "idel") {
           clearInterval(intervalId); // Stop polling when "idel"
           const finaldata = response.data.data.map((item: string) => {
-            const [, companyName, newsImpact, impactReason] =
+            const [,companyName, newsImpact, impactReason] =
               item.match(
                 /companyName:\s*(.*?),\s*newsImpact:\s*(.*?),\s*impactReason:\s*(.*)/
               ) || [];
             return { companyName, newsImpact, impactReason };
           });
+
           setRecommendations(finaldata); // Set the recommendations data
           setIsLoading(false);
           setFetchingInProgress(false);
@@ -90,6 +91,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
   useEffect(() => {
     const checkInitialRecommendationStatus = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(
           "https://fin-track-ai.vercel.app/check_recommendation_status"
         );
@@ -97,7 +99,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
 
         if (status === "idel") {
           const finaldata = data.map((item: string) => {
-            const [, companyName, newsImpact, impactReason] =
+            const [,companyName, newsImpact, impactReason] =
               item.match(
                 /companyName:\s*(.*?),\s*newsImpact:\s*(.*?),\s*impactReason:\s*(.*)/
               ) || [];
@@ -106,11 +108,13 @@ export const useFetchRecommendations = (filters: StockFilters) => {
           setRecommendations(finaldata); // Set the fetched recommendations
           setFetchingInProgress(false);
           setIsPolling(false); // Reset polling flag
+          setIsLoading(false)
         } else if (status === "running") {
           setFetchingInProgress(true);
           pollRecommendationStatus(); // Start polling if the task is in progress
         }
       } catch (err) {
+        setIsLoading(false)
         console.error("Error checking initial recommendation status:", err);
         setError(
           "Failed to check initial recommendation status. Please try again later."

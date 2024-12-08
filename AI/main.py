@@ -43,7 +43,7 @@ async def root():
 @app.post("/allstocks")
 async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTasks):
     global status_all
-    # Set the status to "in-progress"
+    # Set the status to "running"
     status_all = "running"
 
     try:
@@ -60,7 +60,7 @@ async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTa
 async def check_status():
     global status_all
     logging.info(f"Status is : {status_all}")
-    if check_file_exists_in_drive("stockNews.json"):
+    if check_file_exists_in_drive("stockNews.json") and status_all != "running":
             try:
                 data = download_json_from_drive("stockNews.json")
                 return {"status": "idel", "data": data}
@@ -68,7 +68,7 @@ async def check_status():
                 # If any error occurs, set status to "error"
                 status_all = "error"
                 return {"status": "error", "message": str(e)}
-    elif status_all == "in-progress":
+    elif status_all == "running":
         return {"status": "running", "message": "Fetching data, please wait."}
     else:
         return {"status": "idel", "message": "Task has not been started yet."}
@@ -99,7 +99,7 @@ async def stock_recommendation(stockFiltersPlus: StockFiltersPlus, background_ta
 async def check_recommendation_status():
     global status_recommendation
     logging.info(f"Status is : {status_recommendation}")
-    if check_file_exists_in_drive("geminiList.json"):
+    if check_file_exists_in_drive("geminiList.json") and status_recommendation != "running":
         try:
             data = download_json_from_drive("geminiList.json")
             return {"status": "idel", "data": data}

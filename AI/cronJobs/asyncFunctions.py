@@ -51,13 +51,8 @@ async def fetch_all_reccomendations(stockFiltersPlus: StockFiltersPlus):
 
 
         # Get responses for the prompts
-        Model_List = (
-            bestPromt.get_responses_for_prompts(promtsList)
-            if stockFiltersPlus.modelType == "normal"
-            else bestPromtHE.get_responses_for_prompts(promtsList)
-        )
-        
-
+        Model_List = bestPromt.get_responses_for_prompts(promtsList)
+            
         # Write the model list to a JSON file
         upload_json_to_drive(Model_List,"geminiList.json")
         # Set the status to "completed"
