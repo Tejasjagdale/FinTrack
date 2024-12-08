@@ -1,6 +1,8 @@
 # Async function to fetch all stocks and write them to a JSON file
 import json
 import os
+from db.CacheFile import globalVariables,cache
+from drive import check_file_exists_in_drive, delete_file_from_drive, download_json_from_drive, upload_json_to_drive
 from service.fetchAllStocks import StockFetcher, StockFilters
 from service.dataToPromt import data_to_promt # type: ignore
 from models import bestPromt,bestPromtHE
@@ -10,51 +12,42 @@ class StockFiltersPlus(StockFilters):
     modelType: str
 
 async def fetch_all_stocks_json(stock_filters: StockFilters):
-    global status
     try:
         # Fetching stocks
         stock_data = await StockFetcher().fetch_all_stocks(stock_filters)
-        logging.info(f"***** code moved ahead of API calls  with length {stock_data}****")
 
-        logging.info(f"file exists : {os.path.exists('stocknews.json')}")
-        if os.path.exists("stocknews.json"):
-            logging.info(f"***** Json file got removed ****")
-            os.remove("stocknews.json")
+        if check_file_exists_in_drive("stockNews.json"):
+           delete_file_from_drive("stockNews.json")
         
-        logging.info(f"hmmmmm")
         # Writing the fetched data to a JSON file
-        with open("stocknews.json", "w") as json_file:
-            json.dump(stock_data, json_file, indent=4)
-        
+        upload_json_to_drive(stock_data,"stockNews.json")
         # Set the status to "completed" after successful execution
-        status = "completed"
-        logging.info(f"status is : {status}")
+        globalVariables.status = "idel"
+        logging.info(f"status is : {globalVariables.status}")
         return
     
     except Exception as e:
         # If any error occurs, set status to "error"
-        status = "error"
+        globalVariables.status = "error"
         return {"error": str(e)}
     
 
 async def fetch_all_reccomendations(stockFiltersPlus: StockFiltersPlus):
-    global status_recommendation
     promtsList = []
     try:
         logging.info("Starting to fetch recommendations")
 
-        if os.path.exists("geminiList.json"):
-            os.remove("geminiList.json")
+        if check_file_exists_in_drive("geminiList.json"):
+            delete_file_from_drive("geminiList.json")
 
-        if os.path.exists("stocknews.json"):
-            with open("stocknews.json", "r") as json_file:
-                logging.info("Reading stock news from file")
-                allStockList = json.load(json_file)
-                promtsList = data_to_promt(allStockList)
+        if check_file_exists_in_drive("stockNews.json") and stockFiltersPlus.num_stocks == 10:
+            allStockList = download_json_from_drive("stockNews.json")
+            promtsList = data_to_promt(allStockList)
         else:
             logging.info("Fetching stocks since stocknews.json does not exist")
             allStockList = await StockFetcher().fetch_all_stocks(stockFiltersPlus)  # Assuming this fetches stock data
-            promtsList =data_to_promt(allStockList)
+            upload_json_to_drive(allStockList,"stockNews.json")
+            promtsList = data_to_promt(allStockList)
 
 
         # Get responses for the prompts
@@ -66,16 +59,14 @@ async def fetch_all_reccomendations(stockFiltersPlus: StockFiltersPlus):
         
 
         # Write the model list to a JSON file
-        with open("geminiList.json", "w") as json_file:
-            json.dump(Model_List, json_file, indent=4)
-
+        upload_json_to_drive(Model_List,"geminiList.json")
         # Set the status to "completed"
-        status_recommendation = "completed"
+        globalVariables.status_recommendation = "idel"
         logging.info("Recommendation fetching completed successfully.")
 
     except Exception as e:
         # Log the exception
         logging.error(f"Error occurred during recommendation fetching: {str(e)}")
-        status_recommendation = "error"
+        globalVariables.status_recommendation = "error"
         return {"error": str(e)}
 

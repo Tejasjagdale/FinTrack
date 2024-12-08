@@ -3,6 +3,7 @@ import { Box, AppBar, Toolbar, Tabs, Tab, Drawer, List, ListItem, ListItemText, 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import NewsRecommendedStocks from "../NewsRecommendedStocks";
 import StockFetcher from "../StockFetcher";
+import LivemintDataFetcher from "../LiveMintDataFetcher";
 
 const theme = createTheme({
     palette: {
@@ -32,6 +33,8 @@ const Dashboard: React.FC = () => {
                 return <StockFetcher />;
             case "Recommendation":
                 return <NewsRecommendedStocks />
+            case "LiveMint":
+                return <LivemintDataFetcher />
             default:
                 return <></>;
         }

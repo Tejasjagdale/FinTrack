@@ -60,7 +60,7 @@ const StockFetcher: React.FC = () => {
         }}
         onClick={fetchStocks}
         startIcon={isLoading && <CircularProgress color="info" size="20px" />}
-        disabled={isLoading || taskStatus === "in-progress"}
+        disabled={isLoading || taskStatus === "running"}
       >
         Fetch Stocks
       </Button>
@@ -71,7 +71,7 @@ const StockFetcher: React.FC = () => {
         </Typography>
       )}
 
-      {taskStatus === "in-progress" && (
+      {taskStatus === "running" && (
         <Typography sx={{ mt: 2 }}>Fetching stocks, please wait...</Typography>
       )}
 
@@ -83,7 +83,7 @@ const StockFetcher: React.FC = () => {
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 4 }}>
         <Typography variant="h6">Fetched Stocks</Typography>
-        {stocks.length > 0 ?
+        {stocks?.length > 0 ?
           <><Button
             variant="contained"
             onClick={() => handleCopy(stocks)}

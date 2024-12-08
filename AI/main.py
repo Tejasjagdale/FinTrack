@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 import os 
 from cronJobs.asyncFunctions import fetch_all_reccomendations, fetch_all_stocks_json
+from drive import check_file_exists_in_drive, download_json_from_drive
 import models.bestPromt, models.bestPromtHE
 from service.dataToPromt import data_to_promt
 from service.fetchAllStocks import StockFilters, StockFetcher  # Assuming StockFetcher has fetch_all_stocks
@@ -12,6 +13,9 @@ from fastapi import FastAPI , BackgroundTasks # type: ignore
 from fastapi.middleware.cors import CORSMiddleware # type: ignore
 from fastapi.staticfiles import StaticFiles # type: ignore
 import logging
+
+from service.liveMintAPI import fetch_and_transform_data
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -28,65 +32,63 @@ app.add_middleware(
 )
 
 
+status_all = "idel"
+status_recommendation="idel"
+
 @app.get("/")
 async def root():
     return "server is live"
 
-status = "pending"
 # Endpoint to start fetching stocks and update the status
 @app.post("/allstocks")
 async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTasks):
-    global status
-    
+    global status_all
     # Set the status to "in-progress"
-    status = "in-progress"
+    status_all = "running"
 
     try:
         # Start the background task to fetch the stocks asynchronously
         background_tasks.add_task(fetch_all_stocks_json, stock_filters)
-        
-        return {"status": "in-progress", "message": "Your request has been received."}
-    
+        status_all = "ideal"
+        return {"status": "running", "message": "Your request has been received."}
     except Exception as e:
-        status = "error"  # Update status to "error" if an exception occurs
+        status_all = "error"  # Update status to "error" if an exception occurs
         return {"status": "error", "message": str(e)}
     
 # Endpoint to check the status and return the data once the task is completed
 @app.get("/check_status")
 async def check_status():
-    global status
-    logging.info(f"Status is : {status}")
-    if os.path.exists("stocknews.json"):
+    global status_all
+    logging.info(f"Status is : {status_all}")
+    if check_file_exists_in_drive("stockNews.json"):
             try:
-                with open("stocknews.json", "r") as json_file:
-                    data = json.load(json_file)
-                return {"status": "completed", "data": data}
+                data = download_json_from_drive("stockNews.json")
+                return {"status": "idel", "data": data}
             except Exception as e:
                 # If any error occurs, set status to "error"
-                status = "error"
+                status_all = "error"
                 return {"status": "error", "message": str(e)}
-    elif status == "in-progress":
-        return {"status": "in-progress", "message": "Fetching data, please wait."}
+    elif status_all == "in-progress":
+        return {"status": "running", "message": "Fetching data, please wait."}
     else:
-        return {"status": "pending", "message": "Task has not been started yet."}
+        return {"status": "idel", "message": "Task has not been started yet."}
 
 
 class StockFiltersPlus(StockFilters):
     modelType: str
 
-status_recommendation = "pending"
+
 @app.post("/get/stocks/Recommendation/news")
 async def stock_recommendation(stockFiltersPlus: StockFiltersPlus, background_tasks: BackgroundTasks):
     global status_recommendation
-    
-    # Set the status to "in-progress" for recommendations
-    status_recommendation = "in-progress"
+    # Set the status to "running" for recommendations
+    status_recommendation = "running"
 
     try:
         # Start the background task to fetch the recommendations asynchronously
         background_tasks.add_task(fetch_all_reccomendations, stockFiltersPlus)
-        
-        return {"status": "in-progress", "message": "Your request has been received."}
+        status_recommendation = "ideal"
+        return {"status": "running", "message": "Your request has been received."}
     
     except Exception as e:
         status_recommendation = "error"  # Update status to "error" if an exception occurs
@@ -95,18 +97,22 @@ async def stock_recommendation(stockFiltersPlus: StockFiltersPlus, background_ta
 # New check_status function for recommendation task
 @app.get("/check_recommendation_status")
 async def check_recommendation_status():
-    global status_recommendation  # Declare it as global
+    global status_recommendation
     logging.info(f"Status is : {status_recommendation}")
-    if os.path.exists("geminiList.json"):
+    if check_file_exists_in_drive("geminiList.json"):
         try:
-            with open("geminiList.json", "r") as json_file:
-                data = json.load(json_file)
-            return {"status": "completed", "data": data}
+            data = download_json_from_drive("geminiList.json")
+            return {"status": "idel", "data": data}
         except Exception as e:
             # If any error occurs, set status to "error"
             status_recommendation = "error"  # Update global status
             return {"status": "error", "message": str(e)}
-    elif status_recommendation == "in-progress":
-        return {"status": "in-progress", "message": "Fetching recommendations, please wait."}
+    elif status_recommendation == "running":
+        return {"status": "running", "message": "Fetching recommendations, please wait."}
     else:
-        return {"status": "pending", "message": "Recommendation task has not been started yet."}
+        return {"status": "idel", "message": "Recommendation task has not been started yet."}
+    
+@app.get("/livemint")
+async def get_liveMintData():
+    transformed_data = fetch_and_transform_data()
+    return transformed_data

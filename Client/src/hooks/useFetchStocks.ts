@@ -19,7 +19,8 @@ const useFetchStocks = (filters: StockFilters) => {
   const [stocks, setStocks] = useState<any[]>([]);
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [taskStatus, setTaskStatus] = useState<string>("pending"); // Track task status
+  const [taskStatus, setTaskStatus] = useState<string>("idel"); // Track task status, default to "idel"
+  const [isPolling, setIsPolling] = useState<boolean>(false); // Track if polling is in progress
 
   // Function to fetch stocks
   const fetchStocks = async () => {
@@ -27,7 +28,7 @@ const useFetchStocks = (filters: StockFilters) => {
       setIsLoading(true);
       setError(""); // Clear previous errors
       await axios.post("https://fin-track-ai.vercel.app/allstocks", filters);
-      
+
       // Start polling to check status
       pollForStatus();
     } catch (err) {
@@ -39,26 +40,30 @@ const useFetchStocks = (filters: StockFilters) => {
 
   // Function to poll for status
   const pollForStatus = async () => {
+    if (isPolling) return; // Skip polling if there's already an ongoing request
+    setIsPolling(true); // Mark polling as in progress
+
     const interval = setInterval(async () => {
       try {
-        const statusResponse = await axios.get("https://fin-track-ai.vercel.app/check_status");
+        const statusResponse = await axios.get(
+          "https://fin-track-ai.vercel.app/check_status"
+        );
         const { status, data } = statusResponse.data;
-        
-        if (status === "completed") {
-          setStocks(data); // Set the fetched stocks data
+
+        if (status === "idel") {
+          setStocks(data); // Set the fetched stocks data if task is completed
           setIsLoading(false);
-          setTaskStatus("completed");
-          clearInterval(interval); // Stop polling when task is completed
-        } else if (status === "error") {
-          setError("Error occurred while fetching stocks.");
-          setIsLoading(false);
-          setTaskStatus("error");
-          clearInterval(interval); // Stop polling on error
+          setTaskStatus("idel");
+          setIsPolling(false); // Reset polling flag
+          clearInterval(interval); // Stop polling when task is idle (completed)
+        } else if (status === "running") {
+          setTaskStatus("running"); // Continue polling if the task is still running
         }
       } catch (err) {
         console.error("Error checking task status:", err);
         setError("Failed to check task status. Please try again later.");
         setIsLoading(false);
+        setIsPolling(false); // Reset polling flag on error
         clearInterval(interval); // Stop polling on error
       }
     }, 5000); // Poll every 5 seconds
@@ -68,18 +73,23 @@ const useFetchStocks = (filters: StockFilters) => {
   useEffect(() => {
     const checkInitialStatus = async () => {
       try {
-        const statusResponse = await axios.get("https://fin-track-ai.vercel.app/check_status");
+        setIsLoading(true);
+        const statusResponse = await axios.get(
+          "https://fin-track-ai.vercel.app/check_status"
+        );
         const { status, data } = statusResponse.data;
 
-        if (status === "completed") {
+        if (status === "idel") {
           setStocks(data); // Set the fetched stocks data if task is completed
-          setTaskStatus("completed");
-        } else if (status === "in-progress") {
-          setTaskStatus("in-progress");
+          setTaskStatus("idel"); // Task is idle, no need for polling
+          setIsLoading(false);
+        } else if (status === "running") {
+          setTaskStatus("running");
           pollForStatus(); // Start polling if the task is in progress
         }
       } catch (err) {
         console.error("Error checking task status:", err);
+        setIsLoading(false);
         setError("Failed to check task status. Please try again later.");
       }
     };
