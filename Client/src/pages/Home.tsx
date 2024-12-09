@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import viteLogo from '/beaverimg.png';
 import axios from 'axios';
-import { FcGoogle } from "react-icons/fc";
-import { IoLogoGithub } from "react-icons/io";
 
 
 type HomeProps = {

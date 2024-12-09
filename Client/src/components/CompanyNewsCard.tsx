@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,7 +8,11 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  IconButton,
+  Box,
 } from "@mui/material";
+import ShowChartIcon from '@mui/icons-material/ShowChart';
+import StockChartModal from "./StockChartModal";
 
 interface News {
   id: string;
@@ -22,6 +26,7 @@ interface News {
 interface CompanyNews {
   companyName: string;
   latestNews: News[];
+  nseScriptCode: string;
 }
 
 interface CompanyNewsCardProps {
@@ -29,11 +34,23 @@ interface CompanyNewsCardProps {
 }
 
 export const CompanyNewsCard: React.FC<CompanyNewsCardProps> = ({ data }) => {
-  const { companyName, latestNews } = data;
+  const { companyName, latestNews, nseScriptCode } = data;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Card sx={{ backgroundColor: "#2d2d2d", color: "#fff", mb: 2, position: "relative" }}>
       {/* Company Name Chip */}
+      <StockChartModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        companyName={nseScriptCode}
+      />
+      <Box sx={{display:"flex",justifyContent:"flex-end"}}>
+        <IconButton onClick={() => setIsModalOpen(true)} color="success" size="small">
+          <ShowChartIcon />
+        </IconButton>
+      </Box>
+
       <Chip
         label={companyName}
         sx={{

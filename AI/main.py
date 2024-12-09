@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware # type: ignore
 from fastapi.staticfiles import StaticFiles # type: ignore
 import logging
 
+from service.fetchCharts import fetch_stock_chart
 from service.liveMintAPI import fetch_and_transform_data
 
 
@@ -116,3 +117,14 @@ async def check_recommendation_status():
 async def get_liveMintData():
     transformed_data = fetch_and_transform_data()
     return transformed_data
+
+@app.get("/api/stock-chart")
+async def get_stock_chart(stock_name: str,
+                          timeline: str ):
+    """
+    API endpoint to fetch stock chart data.
+    :param stock_name: Name of the stock
+    :param timeline: Timeline type
+    :return: JSON response with candles, changeValue, and changePerc
+    """
+    return await fetch_stock_chart(stock_name, timeline)

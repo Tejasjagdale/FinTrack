@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, List, ListItem, ListItemText, Typography, Box, CircularProgress } from '@mui/material';
-import CandleChart from '../components/CandleChart';
+import CandleChart from '../components/StockChartModal';
 
 const LandingPage: React.FC = () => {
   const [query, setQuery] = useState('');
