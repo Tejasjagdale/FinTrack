@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
-import { Button, ButtonGroup, Dialog, DialogContent, DialogTitle, useMediaQuery, useTheme } from "@mui/material";
+import { Button, ButtonGroup, Dialog, DialogContent, DialogTitle, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 interface StockChartModalProps {
   open: boolean;
@@ -107,10 +107,11 @@ const StockChartModal: React.FC<StockChartModalProps> = ({ open, onClose, compan
       }}
     >
       <DialogTitle style={{ textAlign: "center", fontWeight: "bold" }}>
-        {companyName} Stock Chart 
+        {companyName} Stock Chart
         <Button color="error" onClick={onClose}>Close</Button>
       </DialogTitle>
       <DialogContent>
+        <Typography>total change : <b style={{ color: lineColor }}>{data?.changePerc}</b></Typography>
         <ButtonGroup variant="outlined" size="small" style={{ marginBottom: "10px" }}>
           {timelineOptions.map((option) => (
             <button
