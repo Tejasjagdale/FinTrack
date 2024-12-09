@@ -111,7 +111,7 @@ const StockChartModal: React.FC<StockChartModalProps> = ({ open, onClose, compan
         <Button color="error" onClick={onClose}>Close</Button>
       </DialogTitle>
       <DialogContent>
-        <Typography>total change : <b style={{ color: lineColor }}>{data?.changePerc}</b></Typography>
+        <Typography>total change : <b style={{ color: lineColor }}>{data?.changePerc ? data?.changePerc * 100 : 0}%</b></Typography>
         <ButtonGroup variant="outlined" size="small" style={{ marginBottom: "10px" }}>
           {timelineOptions.map((option) => (
             <button
