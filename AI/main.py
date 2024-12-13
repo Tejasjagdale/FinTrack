@@ -35,9 +35,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    update_json_file_in_drive({},"stockNews.json")
-    update_json_file_in_drive({},"geminiList.json")
-    return CheckStatus()
+    return "server is live"
 
 # Endpoint to start fetching stocks and update the status
 @app.post("/allstocks")
