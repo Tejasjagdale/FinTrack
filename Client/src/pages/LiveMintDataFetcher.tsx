@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Grid, MenuItem, Select, Typography, CircularProgress, Box } from "@mui/material";
+import { Grid, Typography, CircularProgress, Box, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import LiveMintStockCard from "../components/LiveMintStockCard";
 
-// Interface for the data structure
+// Interface for the stock data structure
 interface StockData {
   date: string;
   displayName: string;
@@ -13,23 +13,14 @@ interface StockData {
 }
 
 const LivemintDataFetcher: React.FC = () => {
-  const [data, setData] = useState<{
-    nse_top_gainer_losers: StockData[];
-    top_gainer_losers: StockData[];
-    nse_market_vol_most_active: StockData[];
-    market_vol_most_active: StockData[];
-    price_volume_shocker: StockData[];
-  }>({
-    nse_top_gainer_losers: [],
-    top_gainer_losers: [],
-    nse_market_vol_most_active: [],
-    market_vol_most_active: [],
-    price_volume_shocker: [],
-  });
-
+  const [data, setData] = useState<StockData[]>([]);
+  const [filteredData, setFilteredData] = useState<StockData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTopic, setSelectedTopic] = useState<string>("nse_top_gainer_losers");
+
+  const [selectedOverallRating, setSelectedOverallRating] = useState<string>("");
+  const [selectedLongTermTrend, setSelectedLongTermTrend] = useState<string>("");
+  const [selectedShortTermTrend, setSelectedShortTermTrend] = useState<string>("");
 
   // Fetch data from the API
   useEffect(() => {
@@ -38,7 +29,8 @@ const LivemintDataFetcher: React.FC = () => {
         const response = await fetch("https://fin-track-ai.vercel.app/livemint");
         if (response.ok) {
           const result = await response.json();
-          setData(result);
+          setData(result.liveMintRecommendations || []); // Use unified list from backend
+          setFilteredData(result.livemintRecommendations || []);
         } else {
           setError("Failed to fetch data");
         }
@@ -51,6 +43,25 @@ const LivemintDataFetcher: React.FC = () => {
 
     fetchData();
   }, []);
+
+  // Update filtered data based on selected filters
+  useEffect(() => {
+    setFilteredData(
+      data.filter((item) => {
+        const overallRatingMatch = selectedOverallRating
+          ? item.overallRating === selectedOverallRating
+          : true;
+        const longTermTrendMatch = selectedLongTermTrend
+          ? item.longTermTrends === selectedLongTermTrend
+          : true;
+        const shortTermTrendMatch = selectedShortTermTrend
+          ? item.shortTermTrends === selectedShortTermTrend
+          : true;
+
+        return overallRatingMatch && longTermTrendMatch && shortTermTrendMatch;
+      })
+    );
+  }, [selectedOverallRating, selectedLongTermTrend, selectedShortTermTrend, data]);
 
   // Render loading state
   if (loading) {
@@ -70,37 +81,83 @@ const LivemintDataFetcher: React.FC = () => {
     );
   }
 
-  // Get the currently selected data array
-  const selectedData = data[selectedTopic as keyof typeof data] || [];
+  // Extract unique filter options from data
+  const uniqueOverallRatings = Array.from(new Set(data.map((item) => item.overallRating)));
+  const uniqueLongTermTrends = Array.from(new Set(data.map((item) => item.longTermTrends)));
+  const uniqueShortTermTrends = Array.from(new Set(data.map((item) => item.shortTermTrends)));
 
   return (
     <Box sx={{ padding: 3, backgroundColor: "#242424", color: "white" }}>
       <Typography variant="h4" textAlign="center" gutterBottom>
-        LiveMint Stock Data
+        LiveMint Stock Recommendations
       </Typography>
 
-      {/* Dropdown for selecting a topic */}
-      <Box textAlign="center" marginBottom={3}>
-        <Select
-          value={selectedTopic}
-          onChange={(e) => setSelectedTopic(e.target.value)}
-          sx={{
-            backgroundColor: "#333",
-            color: "white",
-            "& .MuiSelect-icon": { color: "white" },
-          }}
-        >
-          <MenuItem value="nse_top_gainer_losers">NSE Top Gainers & Losers</MenuItem>
-          <MenuItem value="top_gainer_losers">Top Gainers & Losers</MenuItem>
-          <MenuItem value="nse_market_vol_most_active">NSE Market Volume Most Active</MenuItem>
-          <MenuItem value="market_vol_most_active">Market Volume Most Active</MenuItem>
-          <MenuItem value="price_volume_shocker">Price Volume Shocker</MenuItem>
-        </Select>
+      {/* Advanced Filters */}
+      <Box display="flex" justifyContent="center" gap={2} marginBottom={3} flexWrap="wrap">
+        {/* Overall Rating Filter */}
+        <FormControl variant="outlined" sx={{ minWidth: 200, backgroundColor: "#333", color: "white" }}>
+          <InputLabel sx={{ color: "white" }}>Overall Rating</InputLabel>
+          <Select
+            value={selectedOverallRating}
+            onChange={(e) => setSelectedOverallRating(e.target.value)}
+            sx={{
+              color: "white",
+              "& .MuiSelect-icon": { color: "white" },
+            }}
+          >
+            <MenuItem value="">All</MenuItem>
+            {uniqueOverallRatings.map((rating, index) => (
+              <MenuItem key={index} value={rating}>
+                {rating}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Long Term Trends Filter */}
+        <FormControl variant="outlined" sx={{ minWidth: 200, backgroundColor: "#333", color: "white" }}>
+          <InputLabel sx={{ color: "white" }}>Long Term Trend</InputLabel>
+          <Select
+            value={selectedLongTermTrend}
+            onChange={(e) => setSelectedLongTermTrend(e.target.value)}
+            sx={{
+              color: "white",
+              "& .MuiSelect-icon": { color: "white" },
+            }}
+          >
+            <MenuItem value="">All</MenuItem>
+            {uniqueLongTermTrends.map((trend, index) => (
+              <MenuItem key={index} value={trend}>
+                {trend}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Short Term Trends Filter */}
+        <FormControl variant="outlined" sx={{ minWidth: 200, backgroundColor: "#333", color: "white" }}>
+          <InputLabel sx={{ color: "white" }}>Short Term Trend</InputLabel>
+          <Select
+            value={selectedShortTermTrend}
+            onChange={(e) => setSelectedShortTermTrend(e.target.value)}
+            sx={{
+              color: "white",
+              "& .MuiSelect-icon": { color: "white" },
+            }}
+          >
+            <MenuItem value="">All</MenuItem>
+            {uniqueShortTermTrends.map((trend, index) => (
+              <MenuItem key={index} value={trend}>
+                {trend}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
 
-      {/* Grid to render cards */}
+      {/* Grid to render stock cards */}
       <Grid container spacing={2}>
-        {selectedData.map((item, index) => (
+        {filteredData.map((item, index) => (
           <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
             <LiveMintStockCard
               date={item.date}

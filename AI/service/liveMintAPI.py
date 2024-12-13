@@ -47,7 +47,31 @@ def fetch_and_transform_data():
                     BSE_gainers = item['data'].get('BSE_PriceShocker', [])
                     NSE_looser = item['data'].get('NSE_PriceShocker', [])
                     transformed_data['price_volume_shocker'] = BSE_gainers + NSE_looser
-
+                    
+            transformed_data = merge_and_deduplicate(transformed_data)  
         return transformed_data
     else:
         return {"error": "Failed to fetch data"}
+
+def merge_and_deduplicate(json_data):
+    """
+    Merges all arrays from the given JSON object into a single array and removes duplicates based on 'displayName'.
+
+    Args:
+        json_data (dict): The input JSON object containing arrays as values.
+
+    Returns:
+        dict: A dictionary with a single key 'liveMintRecommendations' containing the merged and deduplicated list.
+    """
+    all_items = []
+
+    # Merge all arrays into a single list
+    for key, array in json_data.items():
+        if isinstance(array, list):
+            all_items.extend(array)
+
+    # Deduplicate items based on 'displayName'
+    deduplicated_items = {item['displayName']: item for item in all_items if 'displayName' in item}
+
+    # Return the result in the required format
+    return {"liveMintRecommendations": list(deduplicated_items.values())}

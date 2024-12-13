@@ -66,7 +66,7 @@ const useFetchStocks = (filters: StockFilters) => {
         setIsPolling(false); // Reset polling flag on error
         clearInterval(interval); // Stop polling on error
       }
-    }, 5000); // Poll every 5 seconds
+    }, 10000); // Poll every 5 seconds
   };
 
   // Use effect to check the status when component mounts
