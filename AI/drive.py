@@ -82,7 +82,6 @@ def download_json_from_drive(file_name):
         print(f"An error occurred: {e}")
         return None  # Return None if an error occurs
 
-
 def delete_file_from_drive(file_name):
     """Delete a file from Google Drive within a specific folder by its name."""
     # Authenticate using the service account
@@ -132,3 +131,45 @@ def check_file_exists_in_drive(file_name):
     except Exception as e:
         print(f"An error occurred: {e}")
         return False
+    
+def update_json_file_in_drive( updated_data,file_name):
+    """
+    Update an existing JSON file in Google Drive with new content.
+    
+    :param file_name: Name of the file in the specified folder to be updated.
+    :param updated_data: The updated JSON content to write into the file.
+    """
+    # Authenticate using the service account
+    creds = Credentials.from_service_account_info(json.loads(SERVICE_ACCOUNT_INFO), scopes=SCOPES)
+    service = build('drive', 'v3', credentials=creds)
+
+    try:
+        # Search for the file by name and folder ID (parents)
+        query = f"name='{file_name}' and '{FOLDERID}' in parents"
+        results = service.files().list(q=query, fields="files(id, name)").execute()
+        files = results.get('files', [])
+
+        if not files:
+            print(f"File '{file_name}' not found in folder '{FOLDERID}'.")
+            return False  # Return False if the file is not found
+
+        # Get the first matching file
+        file_id = files[0]['id']
+        print(f"Found file '{file_name}' with ID: {file_id}")
+
+        # Save the updated JSON content to a bytes buffer
+        json_bytes = json.dumps(updated_data).encode('utf-8')
+        file_like_object = io.BytesIO(json_bytes)
+
+        # Create a MediaIoBaseUpload object
+        media = MediaIoBaseUpload(file_like_object, mimetype='application/json', resumable=True)
+
+        # Update the file content on Google Drive
+        updated_file = service.files().update(fileId=file_id, media_body=media).execute()
+        print(f"File '{file_name}' updated successfully with new content.")
+        
+        return True  # Return True if the update is successful
+
+    except Exception as e:
+        print(f"An error occurred while updating the file: {e}")
+        return False  # Return False if an error occurs
