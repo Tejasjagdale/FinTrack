@@ -33,10 +33,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-SetStatusIdel()
-SetStatusIdelR()
-
 @app.get("/")
 async def root():
     update_json_file_in_drive({},"stockNews.json")
