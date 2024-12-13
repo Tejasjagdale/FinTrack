@@ -44,7 +44,6 @@ async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTa
     try:
         # Start the background task to fetch the stocks asynchronously
         background_tasks.add_task(fetch_all_stocks_json, stock_filters)
-        SetStatusIdel()
         return {"status": "running", "message": "Your request has been received."}
     except Exception as e:
         SetStatusIdel()
@@ -77,7 +76,6 @@ async def stock_recommendation(stockFiltersPlus: StockFiltersPlus, background_ta
     try:
         # Start the background task to fetch the recommendations asynchronously
         background_tasks.add_task(fetch_all_reccomendations, stockFiltersPlus)
-        SetStatusIdelR()
         return {"status": "running", "message": "Your request has been received."}
     
     except Exception as e:
