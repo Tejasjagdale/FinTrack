@@ -37,6 +37,12 @@ app.add_middleware(
 async def root():
     return "server is live"
 
+@app.get("/reset")
+async def root():
+    SetStatusIdel()
+    SetStatusIdelR()
+    return "reset"
+
 # Endpoint to start fetching stocks and update the status
 @app.post("/allstocks")
 async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTasks):
