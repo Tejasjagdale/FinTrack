@@ -7,6 +7,7 @@ from drive import download_json_from_drive
 import models.bestPromt, models.bestPromtHE
 from service.dataToPromt import data_to_promt
 from service.fetchAllStocks import StockFilters, StockFetcher  # Assuming StockFetcher has fetch_all_stocks
+from service.fetchPredictions import fetchPredictions
 from apscheduler.schedulers.background import BackgroundScheduler # type: ignore
 from apscheduler.triggers.interval import IntervalTrigger # type: ignore
 from pydantic import BaseModel # type: ignore
@@ -118,3 +119,7 @@ async def get_stock_chart(stock_name: str,
     :return: JSON response with candles, changeValue, and changePerc
     """
     return await fetch_stock_chart(stock_name, timeline)
+
+@app.get("/stock-prediction")
+async def get_stock_predictions():
+    return fetchPredictions()

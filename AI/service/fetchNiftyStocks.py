@@ -1,5 +1,6 @@
 import requests
 
+
 def fetch_nifty100():
     try:
         # Fetch data from the API 100-nifty-218500
