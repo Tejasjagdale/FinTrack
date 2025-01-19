@@ -28,7 +28,7 @@ def fetch_stock_news(groww_company_id, time_window_hours=DEFAULT_TIME_WINDOW_HOU
     try:
         # Define the API URL
         api_url = f"{NEWS_API_URL}/{groww_company_id}?page=0&size=50"
-        logger.info(f"Fetching news for company ID: {groww_company_id}")
+        logger.info(f"Fetching news for company ID: {api_url}")
 
         response = requests.get(api_url)
         response.raise_for_status()  # Raise exception for HTTP errors

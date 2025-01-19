@@ -1,6 +1,6 @@
 package com.fintrack.fintrack.service;
 
-import com.fintrack.fintrack.entity.User;
+import com.fintrack.fintrackmodel.Entity.Users.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

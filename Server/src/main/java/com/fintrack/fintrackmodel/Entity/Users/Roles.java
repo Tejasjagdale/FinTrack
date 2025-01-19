@@ -1,4 +1,4 @@
-package com.fintrack.fintrack.entity;
+package com.fintrack.fintrackmodel.Entity.Users;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

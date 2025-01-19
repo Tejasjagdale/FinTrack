@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  fastapi_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"  # Map port 8000 of the container to port 8000 on the host
+    volumes:
+      - .:/app  # Mount the current directory to the container for live updates
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS_JSON=${GOOGLE_APPLICATION_CREDENTIALS_JSON}
+    restart: always

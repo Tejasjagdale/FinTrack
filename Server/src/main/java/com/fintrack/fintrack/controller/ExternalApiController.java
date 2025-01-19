@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class ExternalApiController {
 
     @Autowired
-    private ScreenerService screenerService;
+    ScreenerService screenerService;
 
     @GetMapping("/stockdata")
     public Object getStockData(@RequestParam String companyId, @RequestParam String query,@RequestParam String days) {

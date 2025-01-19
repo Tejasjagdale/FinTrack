@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d8ba900-0b18-47b4-915d-54b887ca3262" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/service/fetchStockNews.py" beforeDir="false" afterPath="$PROJECT_DIR$/AI/service/fetchStockNews.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/components/StockChartModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/components/StockChartModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/hooks/useFetchRecommendations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/hooks/useFetchRecommendations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/hooks/useFetchStocks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/hooks/useFetchStocks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/pages/LiveMintDataFetcher.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/pages/LiveMintDataFetcher.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,9 +16,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2iQS2av0WL4fN9C3x1G4NjJPJUr" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,7 +27,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "tejas",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Admin/Desktop/fintrack/fintrack/FinTrack/Server"
   }
@@ -32,6 +36,8 @@
     <option name="configurationTypes">
       <set>
         <option value="Application" />
+        <option value="CompoundRunConfigurationType" />
+        <option value="MavenRunConfiguration" />
       </set>
     </option>
   </component>

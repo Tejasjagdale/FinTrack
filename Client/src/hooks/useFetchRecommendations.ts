@@ -33,7 +33,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
 
       // Start fetching recommendations
       await axios.post(
-        "https://fin-track-ai.vercel.app/get/stocks/Recommendation/news",
+        "http://127.0.0.1:8000/get/stocks/Recommendation/news",
         filters
       );
 
@@ -55,7 +55,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
     try {
       const intervalId = setInterval(async () => {
         const response = await axios.get(
-          "https://fin-track-ai.vercel.app/check_recommendation_status"
+          "http://127.0.0.1:8000/check_recommendation_status"
         );
 
         if (response.data.status === "idel") {
@@ -93,7 +93,7 @@ export const useFetchRecommendations = (filters: StockFilters) => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          "https://fin-track-ai.vercel.app/check_recommendation_status"
+          "http://127.0.0.1:8000/check_recommendation_status"
         );
         const { status, data } = response.data;
 

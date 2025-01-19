@@ -1,5 +1,5 @@
 package com.fintrack.fintrack.repository;
-import com.fintrack.fintrack.entity.Roles;
+import com.fintrack.fintrackmodel.Entity.Users.Roles;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 @Repository

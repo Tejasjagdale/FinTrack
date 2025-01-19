@@ -1,9 +1,7 @@
-package com.fintrack.fintrack.entity;
+package com.fintrack.fintrackmodel.Entity.Users;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter

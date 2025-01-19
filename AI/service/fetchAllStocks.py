@@ -31,6 +31,7 @@ class StockFetcher:
         """
         logger.info(f"Building payload with filters: {stock_filters}")
         return {
+            
             "listFilters": {
                 "INDUSTRY": stock_filters.industry,
                 "INDEX": stock_filters.index,

@@ -1,6 +1,6 @@
 package com.fintrack.fintrack.service.Impl;
 
-import com.fintrack.fintrack.entity.Records;
+import com.fintrack.fintrackmodel.Entity.Users.Records;
 import com.fintrack.fintrack.repository.RecordRepository;
 import com.fintrack.fintrack.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;

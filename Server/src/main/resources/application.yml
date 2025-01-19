@@ -31,4 +31,9 @@ spring:
             client-id: Ov23liJP6IG2eTHxXrln
             client-secret: 69e51e1a838539f5123e6d8124e73e54cee7e201
             scope: read:user,user:email
+
+  devtools:
+    restart:exclude=static/**,public/**
+
 frontend-url: "http://localhost:5173"
+

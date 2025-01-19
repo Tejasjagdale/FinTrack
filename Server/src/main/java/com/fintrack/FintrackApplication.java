@@ -1,4 +1,4 @@
-package com.fintrack.fintrack;
+package com.fintrack;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

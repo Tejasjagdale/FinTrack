@@ -18,6 +18,18 @@ import logging
 from service.fetchCharts import fetch_stock_chart
 from service.liveMintAPI import fetch_and_transform_data
 
+# from apscheduler.schedulers.background import BackgroundScheduler
+# import time
+
+# Function to be scheduled
+# def print_message():
+#     print(f"Job executed at: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+# # Initialize the scheduler
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(print_message, 'interval', seconds=10)
+# scheduler.start()
+
 
 logging.basicConfig(level=logging.INFO)
 

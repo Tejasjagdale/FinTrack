@@ -21,7 +21,7 @@ const StockChartModal: React.FC<StockChartModalProps> = ({ open, onClose, compan
     try {
       setError(null);
       const response = await axios.get(
-        `https://fin-track-ai.vercel.app/api/stock-chart`,
+        `http://127.0.0.1:8000/api/stock-chart`,
         {
           params: { stock_name: companyName, timeline: timeline },
         }
