@@ -1,16 +1,12 @@
-from datetime import datetime
-import json
-import os 
+from datetime import datetime 
 from cronJobs.asyncFunctions import fetch_all_reccomendations, fetch_all_stocks_json
 from db.CacheFile import *
 from drive import download_json_from_drive
-import models.bestPromt, models.bestPromtHE
-from service.dataToPromt import data_to_promt
 from service.fetchAllStocks import StockFilters, StockFetcher  # Assuming StockFetcher has fetch_all_stocks
-from service.fetchPredictions import fetchPredictions
-from apscheduler.schedulers.background import BackgroundScheduler # type: ignore
-from apscheduler.triggers.interval import IntervalTrigger # type: ignore
-from pydantic import BaseModel # type: ignore
+# from service.fetchPredictions import fetchPredictions
+# from apscheduler.schedulers.background import BackgroundScheduler # type: ignore
+# from apscheduler.triggers.interval import IntervalTrigger # type: ignore
+# from pydantic import BaseModel # type: ignore
 from fastapi import FastAPI , BackgroundTasks # type: ignore
 from fastapi.middleware.cors import CORSMiddleware # type: ignore
 from fastapi.staticfiles import StaticFiles # type: ignore
@@ -120,6 +116,6 @@ async def get_stock_chart(stock_name: str,
     """
     return await fetch_stock_chart(stock_name, timeline)
 
-@app.get("/stock-prediction")
-async def get_stock_predictions():
-    return fetchPredictions()
+# @app.get("/stock-prediction")
+# async def get_stock_predictions():
+#     return fetchPredictions()
