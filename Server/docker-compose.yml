@@ -1,0 +1,18 @@
+---
+services:
+  app:
+    image: fintrack/fintrack-server:latest
+    ports:
+      - "8090:8090"
+    expose:
+      - "8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+#  database:
+#    image: postgres:latest
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_USER: user
+#      POSTGRES_PASSWORD: password
+#      POSTGRES_DB: mydb
