@@ -3,8 +3,6 @@ package com.fintrack.fintrack.controller;
 import com.fintrack.fintrack.entity.Records;
 import com.fintrack.fintrack.entity.Roles;
 import com.fintrack.fintrack.external.api.ScreenerService;
-import com.fintrack.fintrack.repository.RoleRepository;
-import com.fintrack.fintrack.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -17,12 +15,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/v1/finTrack")
 public class FinTrackController {
-
-    @Autowired
-    private RecordService recordService;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private ScreenerService screenerService;
