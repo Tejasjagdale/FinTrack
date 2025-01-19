@@ -1,22 +1,22 @@
 server:
   port:
-    8089
+    8090
   use-forward-headers:
     true
 spring:
   application:
     name: fintrack
-  datasource:
-    url: jdbc:postgresql://localhost:5432/finTrack
-    username: postgres
-    password: Tejas@2002
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/finTrack
+#    username: postgres
+#    password: Root
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
   security:
     user:
       username: user
