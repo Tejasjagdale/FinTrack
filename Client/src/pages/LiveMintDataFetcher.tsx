@@ -175,3 +175,4 @@ const LivemintDataFetcher: React.FC = () => {
 };
 
 export default LivemintDataFetcher;
+
