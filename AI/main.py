@@ -30,6 +30,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class StockFiltersPlus(StockFilters):
+    modelType: str
+
 @app.get("/")
 async def root():
     return "server is live"
@@ -51,6 +54,15 @@ async def all_stocks(stock_filters: StockFilters, background_tasks: BackgroundTa
     except Exception as e:
         SetStatusIdel()
         return {"status": "error", "message": str(e)}
+
+# Sync Endpoint 
+@app.post("/allstocks/sync")
+async def all_stocks(stock_filters: StockFilters):
+    SetStatusRunning()
+    try:
+        return fetch_all_stocks_json(stock_filters)
+    except Exception as e:
+        return {"message":"SomeThing went Wrong","data":[]}   
     
 # Endpoint to check the status and return the data once the task is completed
 @app.get("/check_status")
@@ -69,21 +81,28 @@ async def check_status():
         return {"status": "idel", "message": "Task has not been started yet."}
 
 
-class StockFiltersPlus(StockFilters):
-    modelType: str
-
 
 @app.post("/get/stocks/Recommendation/news")
 async def stock_recommendation(stockFiltersPlus: StockFiltersPlus, background_tasks: BackgroundTasks):
     SetStatusRunningR()
     try:
         # Start the background task to fetch the recommendations asynchronously
-        background_tasks.add_task(fetch_all_reccomendations, stockFiltersPlus)
+        background_tasks.add_task(fetch_all_reccomendations,stockFiltersPlus)
         return {"status": "running", "message": "Your request has been received."}
     
     except Exception as e:
         SetStatusIdelR()  # Update status to "error" if an exception occurs
         return {"status": "error", "message": str(e)}
+    
+
+@app.post("/get/stocks/Recommendation/news/sync")
+async def stock_recommendation(stockFiltersPlus: StockFiltersPlus):
+    SetStatusRunningR()
+    try:
+        return fetch_all_reccomendations(stockFiltersPlus)
+    
+    except Exception as e:
+        return{"message":"SomeThing went Wrong","data":[]}
     
 # New check_status function for recommendation task
 @app.get("/check_recommendation_status")

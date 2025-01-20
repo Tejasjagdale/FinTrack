@@ -1,10 +1,12 @@
+import logging
+import os
 import google.generativeai as genai # type: ignore
 import time
 
 from utils.extractCompanyName import extract_company_name
 
 # Configure the API key
-genai.configure(api_key="AIzaSyCM9DoUyFbGbT6GfQ2Od-4cMXwaAMyIz8o")
+genai.configure(api_key="AIzaSyCNS4ONbgAS1Dc8_qSvyaSFzwfljLj7cZY")
 
 # Create the model
 generation_config = {
@@ -41,7 +43,14 @@ def get_responses_for_prompts(prompts):
             response = chat_session.send_message(prompt)
             responses.append(response.text)
             time.sleep(5)
-        except:
-          print("An exception occurred for "+company_name)
+        except Exception as e:
+            error_message = f"An exception occurred for {company_name}: {e}"
+            print(error_message) # Or remove this and just use the logging
+            logging.error(error_message, exc_info=True) # Log with exception details
+            # Handle the error appropriately:
+            # 1. Retry with exponential backoff
+            # 2. Return a default value (e.g., "")
+            # 3. Skip this prompt and continue
+            responses.append("")  # Example: appending an empty string
 
     return responses

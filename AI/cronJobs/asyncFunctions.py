@@ -18,7 +18,7 @@ async def fetch_all_stocks_json(stock_filters: StockFilters):
 
         update_json_file_in_drive(stock_data,"stockNews.json")
         SetStatusIdel()
-        return
+        return stock_data
     
     except Exception as e:
         SetStatusIdel()
@@ -47,6 +47,7 @@ async def fetch_all_reccomendations(stockFiltersPlus: StockFiltersPlus):
         update_json_file_in_drive(Model_List,"geminiList.json")
         SetStatusIdelR()
         logging.info("Recommendation fetching completed successfully.")
+        return Model_List
 
     except Exception as e:
         # Log the exception

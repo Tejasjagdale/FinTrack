@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import axios from "axios";
 import { Button, ButtonGroup, Dialog, DialogContent, DialogTitle, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { fintrack_AI } from "../constant";
 
 interface StockChartModalProps {
   open: boolean;
@@ -21,7 +22,7 @@ const StockChartModal: React.FC<StockChartModalProps> = ({ open, onClose, compan
     try {
       setError(null);
       const response = await axios.get(
-        `https://fin-track-ai.vercel.app/api/stock-chart`,
+        `http://127.0.0.1:8000/api/stock-chart`,
         {
           params: { stock_name: companyName, timeline: timeline },
         }
