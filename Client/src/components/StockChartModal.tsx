@@ -22,7 +22,7 @@ const StockChartModal: React.FC<StockChartModalProps> = ({ open, onClose, compan
     try {
       setError(null);
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/stock-chart`,
+        `${import.meta.env.VITE_FINTRACK_AI}/api/stock-chart`,
         {
           params: { stock_name: companyName, timeline: timeline },
         }
