@@ -6,7 +6,7 @@ import time
 from utils.extractCompanyName import extract_company_name
 
 # Configure the API key
-genai.configure(api_key="AIzaSyCNS4ONbgAS1Dc8_qSvyaSFzwfljLj7cZY")
+genai.configure(api_key="AIzaSyBDCezGTtcVT1nBvrz8FvPDT-V1wt16Erw")
 
 # Create the model
 generation_config = {
@@ -18,7 +18,7 @@ generation_config = {
 }
 
 model = genai.GenerativeModel(
-    model_name="tunedModels/perfectposneg-z01rs26mkxga",
+    model_name="tunedModels/perfectposnegnewwithreason-bix0t1861rh6",
     generation_config=generation_config,
 )
 #gemini-1.5-flash
@@ -43,6 +43,7 @@ def get_responses_for_prompts(prompts):
             response = chat_session.send_message(prompt)
             responses.append(response.text)
             time.sleep(5)
+            print("ai response for "+company_name+" is "+response.text)
         except Exception as e:
             error_message = f"An exception occurred for {company_name}: {e}"
             print(error_message) # Or remove this and just use the logging

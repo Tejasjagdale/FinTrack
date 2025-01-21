@@ -4,7 +4,7 @@ import time
 from utils.extractCompanyName import extract_company_name
 
 # Configure the API key
-genai.configure(api_key="AIzaSyCM9DoUyFbGbT6GfQ2Od-4cMXwaAMyIz8o")
+genai.configure(api_key="AIzaSyBDCezGTtcVT1nBvrz8FvPDT-V1wt16Erw")
 
 # Create the model
 generation_config = {
@@ -16,7 +16,7 @@ generation_config = {
 }
 
 model = genai.GenerativeModel(
-    model_name="tunedModels/perfectposneg-rkr9r4q35m2j",
+    model_name="tunedModels/perfectposnegnew-ylsdl6wjy0i7",
     generation_config=generation_config,
 )
 #gemini-1.5-flash
