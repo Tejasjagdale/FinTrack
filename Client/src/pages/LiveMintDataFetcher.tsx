@@ -26,7 +26,7 @@ const LivemintDataFetcher: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_FINTRACK_AI}/livemint`);
+        const response = await fetch(`http://194.164.148.248:8000/livemint`);
         if (response.ok) {
           const result = await response.json();
           setData(result.liveMintRecommendations || []); // Use unified list from backend

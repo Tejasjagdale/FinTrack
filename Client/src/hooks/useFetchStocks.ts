@@ -27,7 +27,7 @@ const useFetchStocks = (filters: StockFilters) => {
     try {
       setIsLoading(true);
       setError(""); // Clear previous errors
-      await axios.post(`${import.meta.env.VITE_FINTRACK_AI}/allstocks`, filters);
+      await axios.post(`http://194.164.148.248:8000/allstocks`, filters);
 
       // Start polling to check status
       pollForStatus();
@@ -46,7 +46,7 @@ const useFetchStocks = (filters: StockFilters) => {
     const interval = setInterval(async () => {
       try {
         const statusResponse = await axios.get(
-          `${import.meta.env.VITE_FINTRACK_AI}/check_status`
+          `http://194.164.148.248:8000/check_status`
         );
         const { status, data } = statusResponse.data;
 
@@ -75,7 +75,7 @@ const useFetchStocks = (filters: StockFilters) => {
       try {
         setIsLoading(true);
         const statusResponse = await axios.get(
-          `${import.meta.env.VITE_FINTRACK_AI}/check_status`
+          `http://194.164.148.248:8000/check_status`
         );
         const { status, data } = statusResponse.data;
 
