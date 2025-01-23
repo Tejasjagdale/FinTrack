@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class FinTrackController {
 
 
-    @GetMapping("/access")
+    @GetMapping("/access2")
     public String getTem(){return "ACCESS GRANTED!....";};
 
 }
